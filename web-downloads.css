@@ -1,0 +1,148 @@
+/* HyperStocks Web Adaptive "Download the App" Invitations (Follows Positive US Green / Asia Red Color) */
+.web-dl-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 7px;
+  border: 1px solid rgba(var(--bull-rgb), 0.45);
+  background: rgba(var(--bull-rgb), 0.15);
+  color: var(--bull);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(var(--bull-rgb), 0.12);
+  transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.web-dl-cta:hover {
+  background: rgba(var(--bull-rgb), 0.25);
+  border-color: rgba(var(--bull-rgb), 0.72);
+  box-shadow: 0 0 16px rgba(var(--bull-rgb), 0.26);
+}
+
+.web-dl-cta .web-dl-short {
+  display: none;
+}
+
+@media (max-width: 1160px) {
+  .web-dl-cta {
+    padding: 0 8px;
+    font-size: 11px;
+  }
+  .web-dl-cta .web-dl-full {
+    display: none;
+  }
+  .web-dl-cta .web-dl-short {
+    display: inline;
+  }
+}
+
+.web-sidebar-dl-card {
+  position: relative;
+  flex: 0 0 auto;
+  margin: 6px 8px 8px;
+  padding: 9px 10px 10px;
+  border-radius: 10px;
+  background: linear-gradient(160deg, rgba(var(--bull-rgb), 0.09), rgba(10, 16, 26, 0.96) 62%);
+  border: 1px solid rgba(var(--bull-rgb), 0.28);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+.web-sidebar-dl-card.hidden {
+  display: none !important;
+}
+
+.web-sidebar-dl-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.web-sidebar-dl-close {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: -2px;
+  margin-right: -2px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: #8ea0b8;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.web-sidebar-dl-close:hover {
+  background: rgba(148, 163, 184, 0.14);
+  color: #e6edf5;
+}
+
+.web-sidebar-dl-eyebrow {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--bull);
+  min-width: 0;
+}
+
+.web-sidebar-dl-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #f1f5f9;
+  line-height: 1.25;
+}
+
+.web-sidebar-dl-desc {
+  font-size: 10.5px;
+  line-height: 1.38;
+  color: #9fb0c7;
+}
+
+.web-sidebar-dl-btn {
+  margin-top: 2px;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6.5px 10px;
+  border-radius: 7px;
+  border: 1px solid rgba(var(--bull-rgb), 0.48);
+  background: rgba(var(--bull-rgb), 0.17);
+  color: var(--bull);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+}
+
+.web-sidebar-dl-btn:hover {
+  background: var(--bull);
+  border-color: var(--bull);
+  color: #061016;
+}
+
+.web-sidebar-dl-os {
+  text-align: center;
+  font-size: 9.5px;
+  line-height: 1.35;
+  font-family: var(--font-mono);
+  color: #8ea0b8;
+  white-space: normal;
+}

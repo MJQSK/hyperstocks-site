@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About HyperStocks &amp; Support</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%23090d14'/%3E%3Crect x='4' y='10' width='3.2' height='8' rx='1' fill='%2300d395'/%3E%3Crect x='10.4' y='7' width='3.2' height='7' rx='1' fill='%23ff4d6d'/%3E%3Crect x='16.8' y='4' width='3.2' height='9' rx='1' fill='%2350e3c2'/%3E%3C/svg%3E" />
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      margin: 0;
+      padding: 36px 20px 64px;
+      background: #090d14;
+      color: #e6edf5;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      line-height: 1.65;
+    }
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #0e141f;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 14px;
+      padding: 30px 34px;
+    }
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .launch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 8px;
+      background: #50e3c2;
+      color: #061016 !important;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none !important;
+    }
+    .launch-btn:hover { background: #6ff0d4; }
+    h1 { margin: 0 0 6px; font-size: 28px; letter-spacing: -0.02em; color: #50e3c2; }
+    .meta { color: #8ea0b8; font-size: 13px; margin-bottom: 18px; }
+    .nonprofit-banner {
+      padding: 13px 16px;
+      border-radius: 10px;
+      background: rgba(80, 227, 194, 0.08);
+      border: 1px solid rgba(80, 227, 194, 0.28);
+      color: #d7f7ef;
+      font-size: 13.5px;
+      margin-bottom: 22px;
+    }
+    .nonprofit-banner strong { color: #50e3c2; }
+    h2 { font-size: 17px; margin: 26px 0 10px; color: #eef2f7; }
+    p, li { color: #c7d3e3; font-size: 14.5px; }
+    ul { padding-left: 20px; }
+    a { color: #50e3c2; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .dl-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 12px 0 10px;
+    }
+    @media (max-width: 600px) {
+      .dl-grid { grid-template-columns: 1fr; }
+    }
+    .dl-card {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: rgba(0, 211, 149, 0.18);
+      border: 1px solid rgba(0, 211, 149, 0.52);
+      box-shadow: 0 4px 16px rgba(0, 211, 149, 0.12);
+      color: #f1f5f9 !important;
+      text-decoration: none !important;
+      transition: border-color 0.14s ease, background-color 0.14s ease, box-shadow 0.14s ease, transform 0.12s ease;
+    }
+    .dl-card:hover {
+      border-color: rgba(0, 211, 149, 0.85);
+      background: rgba(0, 211, 149, 0.27);
+      box-shadow: 0 6px 22px rgba(0, 211, 149, 0.24);
+      transform: translateY(-1px);
+    }
+    .dl-title { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 15px; font-weight: 700; color: #ffffff; }
+    .dl-ext {
+      display: inline-block;
+      margin-left: 0;
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      background: rgba(6, 16, 22, 0.45);
+      border: 1px solid rgba(0, 211, 149, 0.45);
+      color: #00d395;
+    }
+    .dl-sub { font-size: 12px; color: #d7e4ef; line-height: 1.45; flex: 1 1 auto; }
+    .dl-cta {
+      margin-top: 6px;
+      padding: 7px 10px;
+      border-radius: 7px;
+      background: rgba(6, 16, 22, 0.42);
+      border: 1px solid rgba(0, 211, 149, 0.58);
+      color: #00d395;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      white-space: nowrap;
+      transition: background-color 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+    }
+    .dl-card:hover .dl-cta {
+      background: #00d395;
+      border-color: #00d395;
+      color: #061016;
+    }
+    .dl-card.coming-soon {
+      background: rgba(148, 163, 184, 0.08);
+      border: 1px dashed rgba(148, 163, 184, 0.34);
+      box-shadow: none;
+      cursor: default;
+    }
+    .dl-card.coming-soon:hover {
+      transform: none;
+      background: rgba(148, 163, 184, 0.1);
+      border-color: rgba(148, 163, 184, 0.44);
+      box-shadow: none;
+    }
+    .dl-card.coming-soon .dl-ext {
+      background: rgba(148, 163, 184, 0.12);
+      border-color: rgba(148, 163, 184, 0.34);
+      color: #cbd5e1;
+    }
+    .dl-card.coming-soon .dl-cta {
+      background: rgba(148, 163, 184, 0.1);
+      border-color: rgba(148, 163, 184, 0.34);
+      color: #e6edf5;
+    }
+    .dl-card.coming-soon:hover .dl-cta {
+      background: rgba(148, 163, 184, 0.1);
+      border-color: rgba(148, 163, 184, 0.34);
+      color: #e6edf5;
+    }
+    .dl-note { font-size: 12.5px; color: #8ea0b8; margin-top: 6px; }
+    footer { margin-top: 28px; padding-top: 16px; border-top: 1px solid rgba(148, 163, 184, 0.14); font-size: 12.5px; color: #7c8ea6; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="top-bar">
+      <div>
+        <h1>About HyperStocks &amp; Support</h1>
+        <div class="meta">Version 3.8.1 · Web, macOS, Windows, Android, iOS, iPadOS &amp; watchOS</div>
+      </div>
+      <a class="launch-btn" href="index.html">← Launch HyperStocks Web</a>
+    </div>
+
+    <div class="nonprofit-banner">
+      <strong>Not-for-Profit Educational &amp; Teaching Resource Only:</strong> HyperStocks and this website are built strictly as free, non-commercial educational and teaching resources for studying live markets, charting, valuation concepts, and portfolio analytics. This project is not for profit, carries no ads or fees, does not execute trades, and does not provide financial or investment advice.
+    </div>
+
+    <p>HyperStocks streams live Hyperliquid HIP-3 equity perpetuals, top crypto spot pairs, multi-asset 10-stock comparisons, real-time stock insights, portfolio benchmark analytics, and trading calculators with no login or wallet required.</p>
+
+    <h2>Download Desktop &amp; Mobile Apps</h2>
+    <p>Prefer a standalone app instead of the browser? Download the free educational builds directly below:</p>
+    <div class="dl-grid">
+      <a class="dl-card" href="https://github.com/MJQSK/hyperstocks-site/releases/latest/download/HyperStocks.dmg">
+        <div class="dl-title">macOS <span class="dl-ext">.dmg</span></div>
+        <div class="dl-sub">Universal Apple Silicon &amp; Intel · Developer ID Signed &amp; Apple Notarized</div>
+        <div class="dl-cta">Download .dmg ↓</div>
+      </a>
+      <a class="dl-card" href="https://github.com/MJQSK/hyperstocks-site/releases/latest/download/HyperStocks.exe">
+        <div class="dl-title">Windows <span class="dl-ext">.exe</span></div>
+        <div class="dl-sub">Windows 10 / 11 (64-bit) · Standalone Desktop Executable</div>
+        <div class="dl-cta">Download .exe ↓</div>
+      </a>
+      <a class="dl-card" href="https://github.com/MJQSK/hyperstocks-site/releases/latest/download/HyperStocks.apk">
+        <div class="dl-title">Android <span class="dl-ext">.apk</span></div>
+        <div class="dl-sub">Direct Android Installer Package (Phones &amp; Tablets)</div>
+        <div class="dl-cta">Download .apk ↓</div>
+      </a>
+      <div class="dl-card coming-soon" aria-disabled="true">
+        <div class="dl-title">iOS &amp; iPadOS <span class="dl-ext">iPhone &amp; iPad</span></div>
+        <div class="dl-sub">Use HyperStocks directly in Safari on iPhone and iPad today.</div>
+        <div class="dl-cta">Coming Soon</div>
+      </div>
+    </div>
+    <p class="dl-note"><strong>Installation Notes:</strong> On <strong>macOS</strong>, open <code>HyperStocks.dmg</code> and drag HyperStocks to Applications (Apple Developer ID signed and notarized). On <strong>Windows</strong>, SmartScreen may display <em>"Windows protected your PC"</em> on first run because the standalone <code>.exe</code> is unsigned: click <em>More info</em> → <em>Run anyway</em> if you choose to run it. On <strong>Android</strong>, enable <em>Install unknown apps</em> when prompted to install the direct <code>.apk</code>.</p>
+    <p class="dl-note"><strong>Experimental Software &amp; Device Disclaimer:</strong> All downloadable builds (<code>.dmg</code>, <code>.exe</code>, <code>.apk</code>) are independent, experimental software provided "as is" with no warranty or guarantee of bug-free operation, compatibility, or future updates. You download, install, and run them strictly at your own sole risk, and the creator, developer, operator, and contributors assume zero liability and are not responsible or liable under any circumstances for any device, operating system, software, hardware, or data impact or loss. By downloading, you agree to the <a href="terms.html">Terms &amp; Disclaimer</a>.</p>
+    <p class="dl-note">You can also browse all release files on <a href="https://github.com/MJQSK/hyperstocks-site/releases/latest" target="_blank" rel="noopener noreferrer">GitHub Releases ↗</a>, or use <a href="index.html">HyperStocks Web</a> directly in your browser with no installation.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <ul>
+      <li><strong>Do I need an account or wallet?</strong> No. All market data streams directly from public read-only APIs and your watchlist, holdings, alerts, and chart drawings stay stored privately on your own device or browser.</li>
+      <li><strong>Why does the Mac/Windows app show extra fundamentals compared to the website?</strong> The native desktop apps include direct historical backfill and Nasdaq fundamental lookups, while the static GitHub Pages website connects directly from your browser to Hyperliquid's public API.</li>
+      <li><strong>How do I add Desktop, Home Screen, or Apple Watch widgets?</strong> On macOS, right-click your desktop → <em>Edit Widgets</em> → search <em>HyperStocks</em>. On iPhone/iPad, long-press your Home Screen or Lock Screen → tap <em>+</em> → search <em>HyperStocks</em>. On Apple Watch, customize your Watch Face or scroll the Smart Stack → tap <em>+</em> → select <em>HyperStocks</em>.</li>
+      <li><strong>How do I refresh live data?</strong> Press <code>⌘R</code> (Mac/iPad keyboard) or click the refresh icon in the top-right bar to reconnect live WebSockets and reload market snapshots.</li>
+      <li><strong>Keyboard shortcuts (Mac, Windows &amp; Web):</strong> <code>⌘1</code>/<code>Ctrl+1</code> Chart · <code>⌘2</code> 2×2 Grid · <code>⌘3</code> Insights · <code>⌘4</code> Portfolio · <code>⌘5</code> Tools · <code>⌘K</code> Search · <code>⌘+</code>/<code>⌘-</code>/<code>⌘0</code> Zoom.</li>
+    </ul>
+
+    <h2>Contact &amp; Bug Reports</h2>
+    <p>Need help, have a teaching suggestion, or want to report a bug? Reach out via either channel below:</p>
+    <ul>
+      <li><a href="https://github.com/MJQSK/hyperstocks-site/issues" target="_blank" rel="noopener noreferrer">Open a Support Ticket / Report an Issue on GitHub ↗</a></li>
+      <li><a href="https://www.linkedin.com/in/matthewjosephquinn/" target="_blank" rel="noopener noreferrer">Contact Matthew Quinn on LinkedIn ↗</a></li>
+    </ul>
+
+    <h2>Privacy and Legal</h2>
+    <ul>
+      <li><a href="index.html">HyperStocks Web App</a></li>
+      <li><a href="privacy.html">Privacy Policy</a></li>
+      <li><a href="terms.html">Disclaimer and Terms of Use</a></li>
+    </ul>
+
+    <footer>© 2026 Matthew Quinn. All rights reserved. Free, not-for-profit educational and teaching resource only, not financial advice.</footer>
+  </main>
+</body>
+</html>

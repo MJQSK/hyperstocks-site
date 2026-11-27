@@ -1,0 +1,884 @@
+/* ============================================================================
+   HyperStocks Universal iOS / iPadOS / iPhone Duo Adaptive Stylesheet
+   Scoped strictly to body.platform-ios (zero impact on macOS or Windows desktop)
+   ============================================================================ */
+
+body.platform-ios {
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+/* Native Safe Areas (Dynamic Island, Home Indicator, iPhone Duo asymmetric cutouts) */
+body.platform-ios .app-shell {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+body.platform-ios .titlebar {
+  padding-left: 14px;
+  padding-right: 12px;
+  height: 46px;
+  min-height: 46px;
+}
+
+/* Subtle Device Mode Button (opens adaptive layout switcher + About footer) */
+.ios-device-btn {
+  display: none;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 7px;
+  background: rgba(148, 163, 184, 0.1);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+body.platform-ios .ios-device-btn {
+  display: inline-flex;
+}
+
+/* Mobile Bottom Tab Bar (hidden on macOS/Windows & full iPad) */
+.mobile-tabbar {
+  display: none;
+  background: rgba(11, 16, 25, 0.97);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-top: 1px solid var(--border);
+  padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 2px;
+  z-index: 40;
+  flex: 0 0 auto;
+}
+
+.mobile-tab-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 5px 2px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  min-height: 44px;
+  transition: color 0.12s ease, background-color 0.12s ease;
+}
+
+.mobile-tab-btn svg {
+  width: 19px;
+  height: 19px;
+  stroke: currentColor;
+}
+
+.mobile-tab-btn.active {
+  color: var(--accent);
+  background: rgba(80, 227, 194, 0.11);
+}
+
+/* Device Mode Picker Sheet (iOS only) */
+.ios-mode-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(4, 7, 12, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+}
+
+.ios-mode-card {
+  width: 100%;
+  max-width: 420px;
+  background: #101724;
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+}
+
+.ios-mode-card h3 {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.ios-mode-detected {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+
+.ios-mode-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.ios-mode-opt {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 10px 11px;
+  border-radius: 10px;
+  background: var(--bg-base);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.ios-mode-opt strong {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ios-mode-opt span {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.ios-mode-opt.active {
+  border-color: var(--accent);
+  background: rgba(80, 227, 194, 0.12);
+}
+
+.ios-mode-opt.active strong {
+  color: var(--accent);
+}
+
+.ios-about-footer {
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  line-height: 1.45;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ============================================================================
+   1. iPHONE (Mobile-First) & iPHONE DUO FOLDED (Cover 466x678pt)
+   ============================================================================ */
+
+body.platform-ios.ios-compact .mobile-tabbar {
+  display: grid;
+}
+
+body.platform-ios.ios-compact .titlebar-right .segmented,
+body.platform-ios.ios-compact #marketCountPill,
+body.platform-ios.ios-compact #portfolioBanner,
+body.platform-ios.ios-compact .web-legal-btn {
+  display: none;
+}
+
+body.platform-ios.ios-compact .titlebar {
+  gap: 6px;
+  padding: 0 12px;
+}
+
+body.platform-ios.ios-compact .titlebar-left {
+  min-width: 0;
+  gap: 8px;
+}
+
+body.platform-ios.ios-compact .brand-name {
+  font-size: 14px;
+}
+
+body.platform-ios.ios-compact .status-pill {
+  padding: 2px 7px;
+  font-size: 10px;
+}
+
+/* Single-Column Mobile Workspace: toggle between Markets sidebar and active stage */
+body.platform-ios.ios-compact .workspace {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.platform-ios.ios-compact .sidebar {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  border-right: none;
+  display: none;
+}
+
+body.platform-ios.ios-compact.mobile-show-markets .sidebar {
+  display: flex;
+}
+
+body.platform-ios.ios-compact.mobile-show-markets .stage {
+  display: none !important;
+}
+
+body.platform-ios.ios-compact .market-row {
+  padding: 11px 14px;
+  min-height: 54px;
+}
+
+/* ---- Mobile-First Chart Stage ---- */
+body.platform-ios.ios-compact .asset-header {
+  flex-wrap: wrap;
+  padding: 8px 12px;
+  gap: 6px 10px;
+}
+
+body.platform-ios.ios-compact .asset-metrics {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+body.platform-ios.ios-compact .big-price {
+  font-size: 20px;
+}
+
+/* Clean 2-Row Mobile Chart Toolbar (all pro tools 1-tap reachable, zero mid-word cutoff) */
+body.platform-ios.ios-compact .chart-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  gap: 6px;
+  overflow: visible;
+}
+
+body.platform-ios.ios-compact .chart-toolbar .toolbar-divider,
+body.platform-ios.ios-compact .chart-toolbar .toolbar-spacer,
+body.platform-ios.ios-compact #chartTypeButtons .pill-btn[data-type="heikin"],
+body.platform-ios.ios-compact #indicatorButtons .pill-btn[data-ind],
+body.platform-ios.ios-compact #btnToggleBook {
+  display: none;
+}
+
+body.platform-ios.ios-compact #tfButtons {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 3px;
+}
+
+body.platform-ios.ios-compact #tfButtons .tf-btn {
+  padding: 5px 0;
+  text-align: center;
+  font-size: 11px;
+}
+
+body.platform-ios.ios-compact #chartTypeButtons,
+body.platform-ios.ios-compact #indicatorButtons,
+body.platform-ios.ios-compact .chart-toolbar > .toolbar-group:last-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+body.platform-ios.ios-compact .chart-toolbar .pill-btn {
+  padding: 5px 8px;
+  font-size: 11px;
+}
+
+/* Crisp Single-Row Range Bar (hide badge on mobile so 1D..ALL never wraps or crowds) */
+body.platform-ios.ios-compact .range-bar {
+  padding: 5px 8px;
+  gap: 2px;
+  justify-content: space-between;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.platform-ios.ios-compact .range-bar::-webkit-scrollbar {
+  display: none;
+}
+
+body.platform-ios.ios-compact #dataSourceBadge {
+  display: none;
+}
+
+body.platform-ios.ios-compact #rangeButtons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 2px;
+}
+
+body.platform-ios.ios-compact .range-btn {
+  padding: 4px 5px;
+  font-size: 10.5px;
+}
+
+body.platform-ios.ios-compact .drawing-rail,
+body.platform-ios.ios-compact .book-panel {
+  display: none;
+}
+
+body.platform-ios.ios-compact .indicators-popover,
+body.platform-ios.ios-compact .draw-tools-popover,
+body.platform-ios.ios-compact .compare-popover,
+body.platform-ios.ios-compact .alert-popover {
+  position: fixed;
+  left: 10px !important;
+  right: 10px !important;
+  top: calc(56px + env(safe-area-inset-top, 0px)) !important;
+  width: auto !important;
+  max-height: 70vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---- Mobile-First Insights Stage ---- */
+body.platform-ios.ios-compact .insights-stage {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.platform-ios.ios-compact .insights-scroll {
+  padding: 12px 12px 28px;
+  height: auto;
+  overflow: visible;
+  gap: 12px;
+}
+
+body.platform-ios.ios-compact .ins-hero,
+body.platform-ios.ios-compact .insights-hero {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px;
+}
+
+body.platform-ios.ios-compact .val-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px;
+}
+
+body.platform-ios.ios-compact .insights-two-col {
+  grid-template-columns: 1fr !important;
+  gap: 12px;
+}
+
+body.platform-ios.ios-compact .er-cards-grid {
+  grid-template-columns: 1fr !important;
+}
+
+body.platform-ios.ios-compact .table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---- Mobile-First Portfolio Stage (Zero Card Collapsing / Zero Overlap!) ---- */
+body.platform-ios.ios-compact .portfolio-stage {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.platform-ios.ios-compact .portfolio-scroll {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  padding: 12px 12px 28px;
+  gap: 12px;
+}
+
+body.platform-ios.ios-compact .kpi-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+body.platform-ios.ios-compact .kpi-card {
+  padding: 11px 12px;
+}
+
+body.platform-ios.ios-compact .kpi-value {
+  font-size: 17px;
+}
+
+body.platform-ios.ios-compact .kpi-sub {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1.3;
+  font-size: 10.5px;
+}
+
+body.platform-ios.ios-compact .pf-main-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  gap: 12px;
+}
+
+body.platform-ios.ios-compact .pf-perf-card {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  overflow: visible !important;
+  padding: 12px;
+}
+
+body.platform-ios.ios-compact .pf-perf-header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+body.platform-ios.ios-compact .pf-perf-controls {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+}
+
+body.platform-ios.ios-compact #pfPerfRanges {
+  width: 100%;
+  display: flex;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.platform-ios.ios-compact #pfPerfRanges::-webkit-scrollbar {
+  display: none;
+}
+
+body.platform-ios.ios-compact #pfPerfRanges .seg-btn {
+  flex: 0 0 auto;
+  padding: 5px 9px;
+}
+
+body.platform-ios.ios-compact .pf-perf-canvas-wrap {
+  min-height: 205px;
+  height: 205px;
+  flex: 0 0 auto !important;
+}
+
+body.platform-ios.ios-compact .pf-bench-stats {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+body.platform-ios.ios-compact .pf-side-stack {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  gap: 12px !important;
+}
+
+body.platform-ios.ios-compact .pf-side-card {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  padding: 13px 14px !important;
+}
+
+body.platform-ios.ios-compact .pf-side-card .pf-card-header {
+  margin-bottom: 10px !important;
+}
+
+body.platform-ios.ios-compact .pf-side-card .donut-layout {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  overflow: visible !important;
+}
+
+body.platform-ios.ios-compact .pf-side-card .donut-legend,
+body.platform-ios.ios-compact .pf-side-card .pnl-bars {
+  flex: 1 1 auto !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+body.platform-ios.ios-compact .legend-item {
+  gap: 8px;
+}
+
+body.platform-ios.ios-compact .pf-holdings-card {
+  flex: 0 0 auto !important;
+  height: auto !important;
+}
+
+body.platform-ios.ios-compact .pf-holdings-scroll {
+  max-height: none !important;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---- Mobile-First Tools / Calculator Stage (All 5 Tabs Visible & Swipeable!) ---- */
+body.platform-ios.ios-compact .tools-stage {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.platform-ios.ios-compact .tools-scroll {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  padding: 12px 12px 28px;
+  gap: 12px;
+}
+
+body.platform-ios.ios-compact .calc-mode-tabs {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  overflow-x: auto !important;
+  flex-wrap: nowrap !important;
+  -webkit-overflow-scrolling: touch;
+  gap: 8px;
+  padding-bottom: 4px;
+  min-height: 56px;
+}
+
+body.platform-ios.ios-compact .calc-mode-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+body.platform-ios.ios-compact .calc-tab-btn {
+  flex: 0 0 auto !important;
+  min-width: 126px;
+  padding: 9px 11px;
+}
+
+body.platform-ios.ios-compact .calc-two-col,
+body.platform-ios.ios-compact .calc-swap-pair {
+  grid-template-columns: 1fr;
+}
+
+body.platform-ios.ios-compact .calc-flip-btn {
+  margin: 0 auto;
+  transform: rotate(90deg);
+}
+
+/* iPhone Duo Folded (Cover 5.4" 466x678pt — wider cover lets 3 valuation tiles & 4 stats shine!) */
+body.platform-ios.device-duo-folded .val-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+body.platform-ios.device-duo-folded .pf-bench-stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* ============================================================================
+   2. iPHONE DUO UNFOLDED (7.6" Foldable Inner Display: 626x890pt / 890x626pt)
+   ============================================================================ */
+
+body.platform-ios.device-duo-unfolded .mobile-tabbar {
+  display: none;
+}
+
+body.platform-ios.device-duo-unfolded .titlebar {
+  padding: 0 12px;
+  gap: 8px;
+}
+
+body.platform-ios.device-duo-unfolded .titlebar-right .segmented {
+  display: inline-flex;
+}
+
+body.platform-ios.device-duo-unfolded #marketCountPill {
+  display: none;
+}
+
+/* Unfolded Portrait (626x890pt): Spacious multi-pane workspace without titlebar crowding */
+body.platform-ios.device-duo-unfolded.duo-portrait #portfolioBanner {
+  display: none;
+}
+
+body.platform-ios.device-duo-unfolded.duo-portrait .brand-name {
+  font-size: 13px;
+}
+
+body.platform-ios.device-duo-unfolded.duo-portrait .seg-btn {
+  padding: 4px 7px;
+  font-size: 11px;
+}
+
+body.platform-ios.device-duo-unfolded.duo-portrait .sidebar {
+  width: 204px;
+  min-width: 192px;
+}
+
+body.platform-ios.device-duo-unfolded.duo-portrait .book-panel {
+  display: none;
+}
+
+body.platform-ios.device-duo-unfolded.duo-portrait .portfolio-scroll {
+  height: auto;
+}
+
+body.platform-ios.device-duo-unfolded.duo-portrait .pf-main-grid {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  height: auto;
+  min-height: 0;
+}
+
+body.platform-ios.device-duo-unfolded.duo-portrait .pf-side-stack {
+  flex-direction: row;
+  flex: 0 0 auto;
+  height: auto;
+  min-height: 165px;
+}
+
+body.platform-ios.device-duo-unfolded.duo-portrait .pf-side-card {
+  flex: 1 1 0;
+  height: auto;
+  overflow: visible;
+}
+
+body.platform-ios.device-duo-unfolded.duo-portrait .calc-two-col {
+  grid-template-columns: 1fr;
+}
+
+/* Unfolded Landscape (890x626pt): Hinge-Aware Dual-Pane Split! */
+body.platform-ios.device-duo-unfolded.duo-landscape .status-pill {
+  white-space: nowrap;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .portfolio-banner {
+  padding: 4px 8px;
+  gap: 7px;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .portfolio-banner .pb-sep:last-of-type,
+body.platform-ios.device-duo-unfolded.duo-landscape .portfolio-banner .pb-section:last-of-type,
+body.platform-ios.device-duo-unfolded.duo-landscape .pb-label {
+  display: none;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .portfolio-banner .pb-pnl {
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .seg-btn {
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .sidebar {
+  width: 224px;
+  min-width: 210px;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .book-panel {
+  width: 205px;
+  min-width: 195px;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .portfolio-stage {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .portfolio-scroll {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .pf-main-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  gap: 12px;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .pf-perf-canvas-wrap {
+  min-height: 210px;
+  height: 210px;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .pf-side-stack {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 20px !important; /* Natural visual gutter across the center fold hinge */
+  flex: 0 0 auto !important;
+  height: auto !important;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .pf-side-card {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  overflow: visible !important;
+  padding: 12px 14px !important;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .pf-side-card .donut-legend .dex-badge {
+  display: none;
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .calc-two-col {
+  grid-template-columns: 1fr 1fr;
+  gap: 20px; /* Natural visual gutter across the center fold hinge */
+}
+
+body.platform-ios.device-duo-unfolded.duo-landscape .insights-two-col {
+  gap: 20px;
+}
+
+/* ============================================================================
+   3. iPAD (iPadOS Adaptive Pro Terminal — Full Screen, Split View & Stage Manager)
+   ============================================================================ */
+
+body.platform-ios.device-ipad .mobile-tabbar {
+  display: none;
+}
+
+body.platform-ios.device-ipad .titlebar {
+  height: 48px;
+  min-height: 48px;
+  padding: 0 16px;
+}
+
+body.platform-ios.device-ipad .seg-btn,
+body.platform-ios.device-ipad .tf-btn,
+body.platform-ios.device-ipad .range-btn {
+  min-height: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+body.platform-ios.device-ipad .market-row {
+  padding: 8px 10px;
+  min-height: 46px;
+}
+
+body.platform-ios.device-ipad .sidebar {
+  width: 248px;
+  min-width: 228px;
+}
+
+body.platform-ios.device-ipad .donut-legend .dex-badge {
+  display: none;
+}
+
+body.platform-ios.device-ipad .legend-item {
+  gap: 10px;
+  align-items: center;
+}
+
+body.platform-ios.device-ipad .legend-val {
+  white-space: nowrap;
+}
+
+/* Never allow titlebar status pills, portfolio stats, or range badges to wrap on iOS/iPadOS */
+body.platform-ios .status-pill,
+body.platform-ios .market-count-pill,
+body.platform-ios .pb-section,
+body.platform-ios .pb-val,
+body.platform-ios .data-source-badge {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Position toasts cleanly above the mobile tab bar on iPhone / compact screens */
+body.platform-ios.ios-compact .toast-container {
+  bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  left: 12px;
+  right: 12px;
+  align-items: center;
+}
+
+body.platform-ios.ios-compact .toast {
+  max-width: 100%;
+}
+
+/* iPad Portrait (720-1120pt, covering iPad mini, Air, Pro 11" & Pro 13" portrait): prevent titlebar & range-bar overflow */
+@media (max-width: 1120px) {
+  body.platform-ios.device-ipad #marketCountPill,
+  body.platform-ios.device-ipad .portfolio-banner .pb-sep:last-of-type,
+  body.platform-ios.device-ipad .portfolio-banner .pb-section:last-of-type,
+  body.platform-ios.device-ipad #dataSourceBadge {
+    display: none;
+  }
+  body.platform-ios.device-ipad .titlebar {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  body.platform-ios.device-ipad .range-btn {
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+}
+
+@media (max-width: 980px) {
+  body.platform-ios.device-ipad .pb-label {
+    display: none;
+  }
+  body.platform-ios.device-ipad .sidebar {
+    width: 218px;
+    min-width: 206px;
+  }
+  body.platform-ios.device-ipad .book-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 820px) {
+  body.platform-ios.device-ipad #portfolioBanner {
+    display: none;
+  }
+}
+
+/* Prevent iOS zoom-on-focus in mobile forms while keeping sidebar filter selects crisp */
+body.platform-ios.ios-compact input[type="text"],
+body.platform-ios.ios-compact input[type="number"],
+body.platform-ios.ios-compact select {
+  font-size: 16px;
+}
+
+body.platform-ios:not(.ios-compact) input[type="text"],
+body.platform-ios:not(.ios-compact) input[type="number"],
+body.platform-ios:not(.ios-compact) select {
+  font-size: 13.5px;
+}
+
+body.platform-ios:not(.ios-compact) .sidebar .mini-select {
+  font-size: 11px !important;
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+body.platform-ios:not(.ios-compact) .sidebar #searchInput {
+  font-size: 12px !important;
+}

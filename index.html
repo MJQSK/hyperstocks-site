@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>HyperStocks Web</title>
+  <meta name="description" content="HyperStocks Web: Live 24/7 Hyperliquid stock perpetuals, crypto spot, 10-stock chart comparison, portfolio tracking, and trading calculators." />
+  <meta name="theme-color" content="#0b1019" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icon-1024.png" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%23090d14'/%3E%3Crect x='4' y='10' width='3.2' height='8' rx='1' fill='%2300d395'/%3E%3Crect x='10.4' y='7' width='3.2' height='7' rx='1' fill='%23ff4d6d'/%3E%3Crect x='16.8' y='4' width='3.2' height='9' rx='1' fill='%2350e3c2'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css?v=1795753719" />
+  <link rel="stylesheet" href="mobile.css?v=1795753719" />
+  <link rel="stylesheet" href="web-downloads.css?v=1795753719" />
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <!-- Top Unified Titlebar with Live Portfolio Banner -->
+    <header id="titlebar" class="titlebar">
+      <div class="titlebar-left">
+        <div class="brand">
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="10" width="3.2" height="8" rx="1" fill="#00d395"/>
+            <line x1="5.6" y1="7" x2="5.6" y2="20" stroke="#00d395" stroke-width="1.4" stroke-linecap="round"/>
+            <rect x="10.4" y="7" width="3.2" height="7" rx="1" fill="#ff4d6d"/>
+            <line x1="12" y1="4.5" x2="12" y2="17" stroke="#ff4d6d" stroke-width="1.4" stroke-linecap="round"/>
+            <rect x="16.8" y="4" width="3.2" height="9" rx="1" fill="#50e3c2"/>
+            <line x1="18.4" y1="2" x2="18.4" y2="16" stroke="#50e3c2" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <span class="brand-name">HyperStocks</span>
+        </div>
+        <div id="wsStatusPill" class="status-pill connecting">
+          <span class="status-dot"></span>
+          <span id="wsStatusText">Connecting...</span>
+        </div>
+      </div>
+
+      <!-- Always-visible Live Portfolio Value + 24h P/L + Total P/L Banner -->
+      <button id="portfolioBanner" class="portfolio-banner" title="Click to open Portfolio tab (⌘4)">
+        <span class="pb-section">
+          <span class="pb-label">PORTFOLIO</span>
+          <span id="bannerTotalVal" class="pb-val">$0.00</span>
+        </span>
+        <span class="pb-sep"></span>
+        <span class="pb-section">
+          <span class="pb-label">24H P/L</span>
+          <span id="banner24hPnl" class="pb-pnl neutral">$0.00 (0.00%)</span>
+        </span>
+        <span class="pb-sep"></span>
+        <span class="pb-section">
+          <span class="pb-label">TOTAL P/L</span>
+          <span id="bannerTotalPnl" class="pb-pnl neutral">$0.00 (0.00%)</span>
+        </span>
+      </button>
+
+      <div class="titlebar-right">
+        <button id="btnIosDeviceMode" class="ios-device-btn" title="Adaptive device layout mode (tap to switch)">Auto</button>
+        <div id="marketCountPill" class="meta-pill">Loading...</div>
+        <div class="segmented" role="group" aria-label="View mode">
+          <button id="btnLayoutSingle" class="seg-btn active" title="Single Chart View (⌘1)">Chart</button>
+          <button id="btnLayoutGrid" class="seg-btn" title="2×2 Multi-Chart Grid (⌘2)">2×2</button>
+          <button id="btnLayoutInsights" class="seg-btn" title="Live Stock Insights & Valuation (⌘3)">Insights</button>
+          <button id="btnLayoutPortfolio" class="seg-btn" title="Live Portfolio Holdings (⌘4)">Portfolio</button>
+          <button id="btnLayoutTools" class="seg-btn" title="Trading Calculators & Tools (⌘5)">Tools</button>
+        </div>
+        <button id="btnColorRegion" class="color-region-btn" title="Market Colors: Western (Green Up / Red Down). Click for Asia (Red Up / Green Down).">
+          <span class="cr-arrows"><span class="cr-up">▲</span><span class="cr-down">▼</span></span>
+          <span id="colorRegionLabel">US</span>
+        </button>
+        <button id="btnWebDownloads" class="web-dl-cta" title="Download the free HyperStocks app for macOS (.dmg), Windows (.exe), or Android (.apk)">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="web-dl-full">Download the App</span>
+          <span class="web-dl-short">Get App</span>
+        </button>
+        <button id="btnLegalDisclosure" class="icon-btn web-legal-btn" title="View Legal Disclosure, Risk Warning &amp; Terms">Legal</button>
+        <a href="support.html" class="icon-btn" title="About HyperStocks, Downloads &amp; Support" style="text-decoration:none;font-size:12px;font-weight:700">?</a>
+        <button id="btnRefresh" class="icon-btn" title="Refresh Markets & Reconnect (⌘R)">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 1 1-2.64-6.36"/>
+            <polyline points="21 3 21 9 15 9"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Body -->
+    <div class="workspace">
+      <!-- Left Sidebar: Watchlist & HIP-3 Stock Explorer -->
+      <aside class="sidebar">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input id="searchInput" type="text" placeholder="Search stock, ticker, DEX...  ⌘K" autocomplete="off" spellcheck="false" />
+          <button id="btnClearSearch" class="clear-btn hidden" title="Clear search">×</button>
+        </div>
+
+        <div class="tab-bar" id="categoryTabs">
+          <button class="tab-btn" data-tab="watchlist">★</button>
+          <button class="tab-btn active" data-tab="stock">Stocks</button>
+          <button class="tab-btn" data-tab="crypto">Crypto</button>
+          <button class="tab-btn" data-tab="commodity_fx">Macro</button>
+          <button class="tab-btn" data-tab="all">All</button>
+        </div>
+
+        <div class="filter-row">
+          <select id="dexSelect" class="mini-select" title="Filter by Hyperliquid HIP-3 deployer">
+            <option value="all">All DEXs</option>
+          </select>
+          <select id="sortSelect" class="mini-select" title="Sort markets">
+            <option value="volume">Sort: 24h Vol</option>
+            <option value="change">Sort: 24h %</option>
+            <option value="price">Sort: Price</option>
+            <option value="name">Sort: A–Z</option>
+          </select>
+        </div>
+
+        <div class="market-list-header">
+          <span>ASSET</span>
+          <span>PRICE / 24H</span>
+        </div>
+
+        <div id="marketList" class="market-list">
+          <div class="empty-state">Fetching live HIP-3 stocks from Hyperliquid...</div>
+        </div>
+        <div id="webSidebarDownloadCard" class="web-sidebar-dl-card">
+          <div class="web-sidebar-dl-top">
+            <div class="web-sidebar-dl-eyebrow">Full-Featured Desktop &amp; Mobile App</div>
+            <button type="button" id="btnDismissSidebarDl" class="web-sidebar-dl-close" title="Hide card">×</button>
+          </div>
+          <div class="web-sidebar-dl-title">Unlock the Full HyperStocks App</div>
+          <div class="web-sidebar-dl-desc">Includes Nasdaq fundamentals, multi-year chart history &amp; faster desktop performance.</div>
+          <button type="button" id="btnSidebarDownloadApp" class="web-sidebar-dl-btn">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download the App</span>
+          </button>
+          <div class="web-sidebar-dl-os">macOS · Windows · Android · iOS (Soon)</div>
+        </div>
+      </aside>
+
+      <!-- Main Stage 1: Single Chart View -->
+      <main id="singleStage" class="stage single-stage">
+        <!-- Asset Header -->
+        <section class="asset-header">
+          <div class="asset-identity">
+            <button id="btnStarActive" class="star-btn lg" title="Toggle Watchlist">☆</button>
+            <div class="asset-title-group">
+              <div class="asset-title-row">
+                <h1 id="activeTicker">—</h1>
+                <span id="activeDexBadge" class="dex-badge">xyz</span>
+                <button id="btnAlertToggle" class="alert-btn" title="Set Price Alert">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                  </svg>
+                  <span id="alertCountBadge" class="alert-count hidden">0</span>
+                </button>
+                <button id="btnQuickInsights" class="quick-insight-btn" title="Open Live Stock Insights, P/E, Targets & Financials (⌘3)">Insights</button>
+                <button id="btnQuickAddHolding" class="quick-hold-btn" title="Add this stock to Portfolio">+ Portfolio</button>
+              </div>
+              <div id="activeCompany" class="asset-company">Loading...</div>
+            </div>
+          </div>
+
+          <div class="asset-price-block">
+            <div id="activePrice" class="big-price">—</div>
+            <div id="activeChange" class="big-change">—</div>
+          </div>
+
+          <div class="asset-metrics">
+            <div class="metric">
+              <span class="metric-label">Oracle</span>
+              <span id="statOracle" class="metric-val">—</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Mark</span>
+              <span id="statMark" class="metric-val">—</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">24h Vol</span>
+              <span id="statVol" class="metric-val">—</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Open Int</span>
+              <span id="statOI" class="metric-val">—</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Funding / 1h</span>
+              <span id="statFunding" class="metric-val">—</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Max Lev</span>
+              <span id="statLev" class="metric-val">—</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Alert Popover -->
+        <div id="alertPopover" class="alert-popover hidden">
+          <div class="alert-pop-header">
+            <span>Price Alerts · <strong id="alertPopTicker">NVDA</strong></span>
+            <button id="btnCloseAlertPop" class="close-x">×</button>
+          </div>
+          <form id="alertForm" class="alert-form">
+            <select id="alertDirection" class="mini-select">
+              <option value="above">Crosses Above ▲</option>
+              <option value="below">Crosses Below ▼</option>
+            </select>
+            <input id="alertPriceInput" type="number" step="any" placeholder="Target price" required />
+            <button type="submit" class="primary-btn">Add</button>
+          </form>
+          <div id="alertList" class="alert-list"></div>
+        </div>
+
+        <!-- Chart Controls Toolbar -->
+        <section class="chart-toolbar">
+          <div class="toolbar-group" id="tfButtons">
+            <button class="tf-btn" data-tf="1m">1m</button>
+            <button class="tf-btn" data-tf="5m">5m</button>
+            <button class="tf-btn active" data-tf="15m">15m</button>
+            <button class="tf-btn" data-tf="1h">1h</button>
+            <button class="tf-btn" data-tf="4h">4h</button>
+            <button class="tf-btn" data-tf="1d">1D</button>
+            <button class="tf-btn" data-tf="1w">1W</button>
+            <button class="tf-btn" data-tf="1M">1M</button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <div class="toolbar-group" id="chartTypeButtons">
+            <button class="pill-btn active" data-type="candles">Candles</button>
+            <button class="pill-btn" data-type="heikin">Heikin</button>
+            <button class="pill-btn" data-type="area">Area</button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <div class="toolbar-group" id="indicatorButtons">
+            <button id="btnIndicatorsMenu" class="pill-btn fx-btn" title="Chart Indicators & Valuation Tools">
+              <span>ƒx Indicators</span>
+              <span id="indCountBadge" class="fx-count">2</span>
+            </button>
+            <button id="btnDrawMenu" class="pill-btn draw-menu-btn" title="Chart Drawing Tools: Lines, Channels, Shapes, Brush, Fib & Risk/Reward">
+              <span>✎ Draw</span>
+              <span id="drawCountBadge" class="draw-count hidden">0</span>
+            </button>
+            <button id="btnCompareMenu" class="pill-btn compare-menu-btn" title="Compare up to 10 assets simultaneously on this chart">
+              <span>⇄ Compare</span>
+              <span id="compareCountBadge" class="compare-count hidden">0</span>
+            </button>
+            <button class="pill-btn active" data-ind="volume">Vol</button>
+            <button class="pill-btn ind-pe" data-ind="pe" title="Live Trailing P/E Ratio Sub-Pane">P/E</button>
+            <button class="pill-btn ind-ema20 active" data-ind="ema20">EMA20</button>
+            <button class="pill-btn ind-vwap" data-ind="vwap">VWAP</button>
+            <button class="pill-btn ind-rsi" data-ind="rsi">RSI</button>
+            <button class="pill-btn ind-macd" data-ind="macd">MACD</button>
+          </div>
+
+          <div class="toolbar-spacer"></div>
+
+          <div class="toolbar-group">
+            <button id="btnLogScale" class="pill-btn" title="Toggle Logarithmic Price Scale">Log</button>
+            <button id="btnAutoScale" class="pill-btn active" title="Auto-fit price axis">Auto</button>
+            <button id="btnResetView" class="pill-btn" title="Reset chart zoom & position (⌘0)">Reset</button>
+            <button id="btnToggleBook" class="pill-btn active" title="Show/Hide Order Book & Live Trades">Book</button>
+          </div>
+        </section>
+
+        <!-- TradingView-Style Categorized Indicators Popover -->
+        <div id="indicatorsPopover" class="indicators-popover hidden">
+          <div class="ind-pop-header">
+            <span><strong>ƒx Indicators & Analyst Tools</strong></span>
+            <button id="btnCloseIndPop" class="close-x">×</button>
+          </div>
+          <div class="ind-pop-grid">
+            <div class="ind-group">
+              <div class="ind-group-title">Trend & Price Overlays</div>
+              <label class="ind-check"><input type="checkbox" data-ind="ema20" checked /><span>EMA 20 <em style="color:#38bdf8">Cyan</em></span></label>
+              <label class="ind-check"><input type="checkbox" data-ind="ema50" /><span>EMA 50 <em style="color:#f59e0b">Amber</em></span></label>
+              <label class="ind-check"><input type="checkbox" data-ind="sma100" /><span>SMA 100 <em style="color:#22d3ee">Sky</em></span></label>
+              <label class="ind-check"><input type="checkbox" data-ind="sma200" /><span>SMA 200 <em style="color:#f472b6">Pink</em></span></label>
+              <label class="ind-check"><input type="checkbox" data-ind="vwap" /><span>Session VWAP <em style="color:#cbd5e1">Dashed</em></span></label>
+              <label class="ind-check"><input type="checkbox" data-ind="bb" /><span>Bollinger Bands (20, 2) <em style="color:#a78bfa">Violet</em></span></label>
+              <label class="ind-check"><input type="checkbox" data-ind="ichimoku" /><span>Ichimoku Cloud (9, 26, 52)</span></label>
+              <label class="ind-check"><input type="checkbox" data-ind="psar" /><span>Parabolic SAR (Trend Dots)</span></label>
+            </div>
+            <div class="ind-group">
+              <div class="ind-group-title">Volume & Volatility</div>
+              <label class="ind-check"><input type="checkbox" data-ind="volume" checked /><span>Volume Histogram</span></label>
+              <label class="ind-check"><input type="checkbox" data-ind="vpvr" /><span>Volume Profile (VPVR + POC)</span></label>
+              <label class="ind-check"><input type="checkbox" data-ind="atr" /><span>ATR (14) Volatility Pane</span></label>
+              <label class="ind-check"><input type="checkbox" data-ind="obv" /><span>On-Balance Volume (OBV)</span></label>
+              <div class="ind-group-title" style="margin-top:10px">Momentum & Valuation Panes</div>
+              <label class="ind-check"><input type="checkbox" data-ind="pe" /><span>Live P/E Ratio <em style="color:#50e3c2">Price / TTM EPS</em></span></label>
+              <label class="ind-check"><input type="checkbox" data-ind="rsi" /><span>RSI (14) <em style="color:#c084fc">70/30</em></span></label>
+              <label class="ind-check"><input type="checkbox" data-ind="macd" /><span>MACD (12, 26, 9)</span></label>
+              <label class="ind-check"><input type="checkbox" data-ind="stoch" /><span>Stochastic (14, 3) <em style="color:#fb923c">80/20</em></span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- TradingView-Style Categorized Drawing Tools Popover -->
+        <div id="drawingToolsPopover" class="indicators-popover draw-popover hidden">
+          <div class="ind-pop-header">
+            <span><strong>✎ Chart Drawing Tools</strong> <em style="color:var(--text-muted);font-style:normal;font-size:11px;margin-left:6px">Click-drag or click 2 points · Drag any shape/handle to edit</em></span>
+            <button id="btnCloseDrawPop" class="close-x">×</button>
+          </div>
+          <div class="draw-pop-grid">
+            <div class="ind-group">
+              <div class="ind-group-title">Lines & Channels</div>
+              <button class="draw-menu-item" data-tool="trendline"><span>Trendline</span><kbd>T</kbd></button>
+              <button class="draw-menu-item" data-tool="ray"><span>Ray (Forward)</span><kbd>R</kbd></button>
+              <button class="draw-menu-item" data-tool="extline"><span>Extended Line (∞)</span><kbd>E</kbd></button>
+              <button class="draw-menu-item" data-tool="hline"><span>Horizontal Line (S/R)</span><kbd>H</kbd></button>
+              <button class="draw-menu-item" data-tool="hray"><span>Horizontal Ray</span><kbd>J</kbd></button>
+              <button class="draw-menu-item" data-tool="vline"><span>Vertical Date Line</span><kbd>V</kbd></button>
+              <button class="draw-menu-item" data-tool="pchannel"><span>Parallel Channel (3-pt)</span><kbd>P</kbd></button>
+              <button class="draw-menu-item" data-tool="channel"><span>Horizontal Price Zone</span><kbd>C</kbd></button>
+            </div>
+            <div class="ind-group">
+              <div class="ind-group-title">Shapes, Sketch & Annotations</div>
+              <button class="draw-menu-item" data-tool="rect"><span>Rectangle / Supply Box</span><kbd>B</kbd></button>
+              <button class="draw-menu-item" data-tool="ellipse"><span>Ellipse / Pattern Circle</span><kbd>O</kbd></button>
+              <button class="draw-menu-item" data-tool="arrow"><span>Directional Arrow</span><kbd>A</kbd></button>
+              <button class="draw-menu-item" data-tool="brush"><span>Freehand Brush</span><kbd>D</kbd></button>
+              <button class="draw-menu-item" data-tool="note"><span>Text Callout Note</span><kbd>N</kbd></button>
+              <button class="draw-menu-item" data-tool="pricelabel"><span>Price Tag Label</span><kbd>G</kbd></button>
+              <div class="ind-group-title" style="margin-top:8px">Fib & Risk Management</div>
+              <button class="draw-menu-item" data-tool="fib"><span>Fibonacci Retracement</span><kbd>F</kbd></button>
+              <button class="draw-menu-item" data-tool="measure"><span>Measure Price / Bars</span><kbd>M</kbd></button>
+              <button class="draw-menu-item" data-tool="position"><span>Long / Short R:R Position</span><kbd>L</kbd></button>
+            </div>
+          </div>
+          <div class="draw-pop-footer">
+            <label class="draw-opt-check"><input type="checkbox" id="chkStayDraw" /><span>Stay in Drawing Mode</span></label>
+            <label class="draw-opt-check"><input type="checkbox" id="chkMagnetSnap" /><span>Magnet OHLC Snap</span></label>
+            <label class="draw-opt-check"><input type="checkbox" id="chkLockAllDraw" /><span>Lock Drawings</span></label>
+            <label class="draw-opt-check"><input type="checkbox" id="chkShowDraw" checked /><span>Show Drawings</span></label>
+          </div>
+        </div>
+
+        <!-- TradingView Drawing Rail + Chart Canvas + Right Order Book -->
+        <div class="single-content">
+          <!-- Left TradingView-Style Drawing Tool Rail -->
+          <div class="drawing-rail" id="drawingRail">
+            <button class="draw-btn active" data-tool="cursor" title="Crosshair / Select & Drag Drawings (Esc)">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">
+                <line x1="12" y1="3" x2="12" y2="21"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <circle cx="12" cy="12" r="2.2" fill="#090d14"/>
+              </svg>
+            </button>
+            <button class="draw-btn" data-tool="trendline" title="Trendline (T): Click-drag or click 2 points">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">
+                <line x1="4" y1="19" x2="20" y2="5"/>
+                <circle cx="5.5" cy="17.5" r="2" fill="currentColor"/>
+                <circle cx="18.5" cy="6.5" r="2" fill="currentColor"/>
+              </svg>
+            </button>
+            <button class="draw-btn" data-tool="ray" title="Extended Ray (R): Projects forward">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">
+                <line x1="4" y1="19" x2="21" y2="4"/>
+                <polyline points="15 4 21 4 21 10"/>
+                <circle cx="5.5" cy="17.5" r="1.8" fill="currentColor"/>
+              </svg>
+            </button>
+            <button class="draw-btn" data-tool="hline" title="Horizontal S/R Line (H): Single click">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <circle cx="12" cy="12" r="2.2" fill="currentColor"/>
+              </svg>
+            </button>
+            <button class="draw-btn" data-tool="hray" title="Horizontal Ray (J): Shoots right from click">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">
+                <line x1="6" y1="12" x2="21" y2="12"/>
+                <circle cx="6" cy="12" r="2.2" fill="currentColor"/>
+                <polyline points="17 8.5 21 12 17 15.5"/>
+              </svg>
+            </button>
+            <button class="draw-btn" data-tool="pchannel" title="Parallel Channel (P): Click 2 trendline pts, then width">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7">
+                <line x1="3" y1="15" x2="17" y2="5"/>
+                <line x1="7" y1="19" x2="21" y2="9"/>
+                <line x1="5" y1="17" x2="19" y2="7" stroke-dasharray="2.5 2"/>
+              </svg>
+            </button>
+            <button class="draw-btn" data-tool="rect" title="Rectangle / Supply-Demand Box (B)">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="4" y="6" width="16" height="12" rx="1" fill="rgba(56,189,248,0.16)"/>
+              </svg>
+            </button>
+            <button class="draw-btn" data-tool="arrow" title="Directional Arrow (A)">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="19" x2="19" y2="5"/>
+                <polyline points="11 5 19 5 19 13"/>
+              </svg>
+            </button>
+            <button class="draw-btn" data-tool="brush" title="Freehand Brush (D): Click & drag to sketch">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18.37 2.63L14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3z"/>
+                <path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/>
+              </svg>
+            </button>
+            <button class="draw-btn" data-tool="fib" title="Fibonacci Retracement (F): Swing high to low">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7">
+                <line x1="3" y1="5" x2="21" y2="5"/>
+                <line x1="3" y1="10" x2="21" y2="10" stroke-dasharray="2.5 2"/>
+                <line x1="3" y1="14" x2="21" y2="14" stroke-dasharray="2.5 2"/>
+                <line x1="3" y1="19" x2="21" y2="19"/>
+              </svg>
+            </button>
+            <button class="draw-btn" data-tool="measure" title="Measure Ruler (M): Price %, bars & time">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7">
+                <rect x="4" y="6" width="16" height="12" rx="1.5" stroke-dasharray="3 2"/>
+                <line x1="8" y1="15" x2="16" y2="9"/>
+                <polyline points="12.5 9 16 9 16 12.5"/>
+              </svg>
+            </button>
+            <button class="draw-btn" data-tool="position" title="Long / Short Risk-Reward Tool (L): Drag TP/SL handles">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6">
+                <rect x="4" y="4" width="16" height="9" fill="rgba(0,211,149,0.25)" stroke="#00d395"/>
+                <rect x="4" y="13" width="16" height="7" fill="rgba(255,77,109,0.25)" stroke="#ff4d6d"/>
+              </svg>
+            </button>
+            <button class="draw-btn" data-tool="note" title="Text Callout Note (N): Click to annotate, double-click to edit">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 5h16v11H9l-5 4V5z"/>
+                <line x1="8" y1="9.5" x2="16" y2="9.5"/>
+                <line x1="8" y1="13" x2="13" y2="13"/>
+              </svg>
+            </button>
+
+            <div class="rail-divider"></div>
+
+            <button class="draw-btn" id="btnStayDraw" title="Stay in Drawing Mode: Keep tool active after each drawing">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 17v5"/>
+                <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>
+              </svg>
+            </button>
+            <button class="draw-btn" id="btnMagnetSnap" title="Magnet Mode: Snap drawings to candle OHLC prices">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                <path d="M6 4v7a6 6 0 0 0 12 0V4"/>
+                <line x1="4" y1="7" x2="8" y2="7"/>
+                <line x1="16" y1="7" x2="20" y2="7"/>
+              </svg>
+            </button>
+            <button class="draw-btn active" id="btnToggleDrawVis" title="Show / Hide All Drawings on Chart">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+            <button class="draw-btn" id="btnLockDrawings" title="Lock All Drawings (Prevent Accidental Moving)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="11" width="16" height="10" rx="2"/>
+                <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+              </svg>
+            </button>
+            <button class="draw-btn" id="btnUndoDraw" title="Undo Last Drawing (Z)">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 14 4 9 9 4"/>
+                <path d="M20 20v-7a4 4 0 0 0-4-4H4"/>
+              </svg>
+            </button>
+            <button class="draw-btn danger" id="btnClearDraw" title="Clear All Drawings on This Stock">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6"/>
+                <path d="M14 11v6"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Center Chart Column (Chart + Bottom Range Selector Bar) -->
+          <div class="chart-column">
+            <div class="chart-wrapper">
+              <div id="ohlcHud" class="ohlc-hud"></div>
+              <div id="compareLegendBar" class="compare-legend-bar hidden"></div>
+              <div id="activeToolBanner" class="tool-banner hidden"></div>
+
+              <!-- Multi-Asset Compare Popover (up to 10 total on chart) -->
+              <div id="comparePopover" class="indicators-popover compare-popover hidden">
+                <div class="ind-pop-header">
+                  <span><strong>⇄ Compare on Chart</strong> <em id="compareLimitHint" style="color:var(--text-muted);font-style:normal;font-size:11px;margin-left:6px">1 / 10 assets</em></span>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <button id="btnClearCompares" class="ghost-btn" style="padding:2px 8px;font-size:11px">Clear</button>
+                    <button id="btnCloseComparePop" class="close-x">×</button>
+                  </div>
+                </div>
+                <div class="compare-pop-body">
+                  <div class="compare-active-chips" id="compareActiveChips"></div>
+                  <input id="compareSearchInput" type="text" class="compare-search-input" placeholder="Search stock or crypto to compare (e.g. AAPL, TSLA, BTC)..." autocomplete="off" spellcheck="false" />
+                  <div class="compare-quick-row" id="compareQuickRow"></div>
+                  <div class="compare-results-list" id="compareResultsList"></div>
+                </div>
+              </div>
+
+              <!-- Floating TradingView Object Style Toolbar (appears when a drawing is selected) -->
+              <div id="drawingStyleBar" class="drawing-style-bar hidden">
+                <div class="dsb-colors" id="dsbColors" title="Color">
+                  <button class="dsb-swatch" data-color="#38bdf8" style="background:#38bdf8"></button>
+                  <button class="dsb-swatch" data-color="#50e3c2" style="background:#50e3c2"></button>
+                  <button class="dsb-swatch" data-color="#00d395" style="background:#00d395"></button>
+                  <button class="dsb-swatch" data-color="#ff4d6d" style="background:#ff4d6d"></button>
+                  <button class="dsb-swatch" data-color="#fbbf24" style="background:#fbbf24"></button>
+                  <button class="dsb-swatch" data-color="#a78bfa" style="background:#a78bfa"></button>
+                  <button class="dsb-swatch" data-color="#f472b6" style="background:#f472b6"></button>
+                  <button class="dsb-swatch" data-color="#f8fafc" style="background:#f8fafc"></button>
+                </div>
+                <span class="dsb-sep"></span>
+                <div class="dsb-group" id="dsbWidths" title="Line Thickness">
+                  <button class="dsb-btn" data-width="1">1px</button>
+                  <button class="dsb-btn" data-width="2">2px</button>
+                  <button class="dsb-btn" data-width="3">3px</button>
+                  <button class="dsb-btn" data-width="4">4px</button>
+                </div>
+                <span class="dsb-sep"></span>
+                <div class="dsb-group" id="dsbStyles" title="Line Style">
+                  <button class="dsb-btn" data-style="solid">Solid</button>
+                  <button class="dsb-btn" data-style="dashed">Dash</button>
+                  <button class="dsb-btn" data-style="dotted">Dot</button>
+                </div>
+                <span class="dsb-sep" id="dsbExtSep"></span>
+                <div class="dsb-group" id="dsbExtGroup">
+                  <button class="dsb-btn" id="btnDsbExtLeft" title="Extend Line Left">← Ext</button>
+                  <button class="dsb-btn" id="btnDsbExtRight" title="Extend Line Right">Ext →</button>
+                </div>
+                <button class="dsb-btn hidden" id="btnDsbEditText" title="Edit Note Text">Edit Text</button>
+                <span class="dsb-sep"></span>
+                <button class="dsb-btn" id="btnDsbLock" title="Lock / Unlock Drawing">Lock</button>
+                <button class="dsb-btn" id="btnDsbDuplicate" title="Duplicate Drawing">Clone</button>
+                <button class="dsb-btn danger" id="btnDsbDelete" title="Delete Selected Drawing (Del)">Del</button>
+              </div>
+
+              <div id="mainChartHost" class="chart-host"></div>
+            </div>
+
+            <!-- TradingView-Style Bottom Long-Range Bar -->
+            <div class="range-bar" id="rangeBar">
+              <div class="range-buttons" id="rangeButtons">
+                <button class="range-btn" data-range="1D">1D</button>
+                <button class="range-btn" data-range="5D">5D</button>
+                <button class="range-btn" data-range="1M">1M</button>
+                <button class="range-btn" data-range="3M">3M</button>
+                <button class="range-btn" data-range="6M">6M</button>
+                <button class="range-btn" data-range="1Y">1Y</button>
+                <button class="range-btn" data-range="3Y">3Y</button>
+                <button class="range-btn" data-range="5Y">5Y</button>
+                <button class="range-btn" data-range="10Y">10Y</button>
+                <button class="range-btn" data-range="ALL">ALL</button>
+              </div>
+              <div class="range-meta">
+                <span id="dataSourceBadge" class="source-badge">Hyperliquid Live</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Live Order Book & Trades Panel -->
+          <aside id="bookPanel" class="book-panel">
+            <div class="panel-section book-section">
+              <div class="panel-header">
+                <span>Order Book</span>
+                <span id="bookSpread" class="panel-sub">Spread —</span>
+              </div>
+              <div class="book-cols">
+                <span>Price</span>
+                <span>Size</span>
+              </div>
+              <div id="bookAsks" class="book-rows asks"></div>
+              <div id="bookMidRow" class="book-mid">
+                <span id="bookMidPrice">—</span>
+              </div>
+              <div id="bookBids" class="book-rows bids"></div>
+            </div>
+
+            <div class="panel-section trades-section">
+              <div class="panel-header">
+                <span>Live Trades</span>
+                <span class="panel-sub">Real-time</span>
+              </div>
+              <div class="book-cols trades-cols">
+                <span>Price</span>
+                <span>Size</span>
+                <span>Time</span>
+              </div>
+              <div id="tradesList" class="trades-list"></div>
+            </div>
+          </aside>
+        </div>
+      </main>
+
+      <!-- Main Stage 2: 2×2 Multi-Chart Grid View -->
+      <main id="gridStage" class="stage grid-stage hidden">
+        <div class="grid-2x2" id="multiGrid"></div>
+      </main>
+
+      <!-- Main Stage 3: Live Stock Insights & Valuation Page -->
+      <main id="insightsStage" class="stage insights-stage hidden">
+        <div class="insights-scroll">
+          <!-- Hero Header -->
+          <section class="ins-hero">
+            <div class="ins-hero-left">
+              <div class="ins-title-row">
+                <h1 id="insTicker">—</h1>
+                <span id="insDexBadge" class="dex-badge dex-xyz">xyz</span>
+                <span id="insExchangeBadge" class="ins-meta-tag">—</span>
+                <span id="insSectorBadge" class="ins-meta-tag hidden">—</span>
+                <span id="insIndustryBadge" class="ins-meta-tag hidden">—</span>
+              </div>
+              <div id="insCompanyName" class="ins-company-name">Loading live stock fundamentals...</div>
+            </div>
+            <div class="ins-hero-price">
+              <div class="ins-live-tag"><span class="live-pulse-dot"></span> LIVE HYPERLIQUID PRICE</div>
+              <div class="ins-price-row">
+                <span id="insLivePrice" class="big-price">—</span>
+                <span id="insLiveChange" class="big-change">—</span>
+              </div>
+            </div>
+            <div class="ins-hero-actions">
+              <button id="btnInsOpenChart" class="primary-btn lg-btn">Interactive Chart</button>
+              <button id="btnInsAddPortfolio" class="ghost-btn">+ Portfolio</button>
+            </div>
+          </section>
+
+          <!-- Insights Sub-Tab Bar (Overview & Profile | Recent Earnings Reports) -->
+          <div class="ins-subtabs" id="insSubTabs">
+            <button class="ins-subtab-btn active" data-instab="overview">Overview &amp; Valuation</button>
+            <button class="ins-subtab-btn" data-instab="earnings">
+              <span>Earnings Reports</span>
+              <span id="insCadencePill" class="ins-cadence-pill">4Q</span>
+            </button>
+          </div>
+
+          <!-- Sub-Pane 1: Overview, Live Valuation & Company Profile -->
+          <div id="insOverviewPane" class="ins-pane">
+            <!-- Live-Priced Valuation Multiples -->
+            <section class="pf-card">
+              <div class="pf-card-header">
+                <h2><span id="insValTitle">Live Valuation Multiples</span> <span class="live-calc-pill">RECALCULATED LIVE</span></h2>
+                <span id="insValSub" class="pf-hint">All multiples dynamically adjust on every Hyperliquid WebSocket price tick</span>
+              </div>
+              <div id="insValuationGrid" class="val-grid"></div>
+              <div id="insRange52Wrap" class="range52-wrap hidden">
+                <div class="range52-labels">
+                  <span><span id="ins52LowLabel">52-Week Low</span> <strong id="ins52Low">—</strong></span>
+                  <span id="ins52Status" class="pf-hint">—</span>
+                  <span><span id="ins52HighLabel">52-Week High</span> <strong id="ins52High">—</strong></span>
+                </div>
+                <div class="range52-track">
+                  <div id="ins52Fill" class="range52-fill"></div>
+                  <div id="ins52Pin" class="range52-pin"></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Analyst Consensus / Key Drivers + Quarterly EPS / Price Trend Chart -->
+            <section class="ins-two-col">
+              <div class="pf-card">
+                <div class="pf-card-header">
+                  <h2 id="insAnalystTitle">Wall Street Consensus &amp; Live Target Upside</h2>
+                  <span id="insAnalystCount" class="pf-hint">—</span>
+                </div>
+                <div id="insAnalystBody" class="analyst-body">
+                  <div class="empty-state">Loading analyst consensus...</div>
+                </div>
+              </div>
+
+              <div class="pf-card">
+                <div class="pf-card-header">
+                  <h2 id="insEpsTitle">Quarterly EPS Actuals &amp; Forward Estimates</h2>
+                  <span id="insEpsSub" class="pf-hint">Actual vs Consensus ($)</span>
+                </div>
+                <div class="eps-canvas-wrap">
+                  <canvas id="insEpsCanvas" width="480" height="190"></canvas>
+                </div>
+              </div>
+            </section>
+
+            <!-- Financial Health & 4-Year Income Statement -->
+            <section class="pf-card" id="insFinSection">
+              <div class="pf-card-header">
+                <h2>Financial Health &amp; Annual Income Statement</h2>
+                <span class="pf-hint">Margins, cash flow &amp; 4-year trend</span>
+              </div>
+              <div id="insMarginsStrip" class="margins-strip"></div>
+              <div class="table-wrap" style="margin-top:10px">
+                <table class="holdings-table" id="insFinTable">
+                  <thead id="insFinHead"></thead>
+                  <tbody id="insFinBody"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- Hyperliquid Perp Microstructure + Company Profile -->
+            <section class="ins-two-col">
+              <div class="pf-card">
+                <div class="pf-card-header">
+                  <h2>Hyperliquid Perp Microstructure</h2>
+                  <span class="pf-hint">Real-time on-chain market stats</span>
+                </div>
+                <div id="insHlMicroGrid" class="val-grid compact"></div>
+              </div>
+
+              <div class="pf-card">
+                <div class="pf-card-header">
+                  <h2>Company Profile</h2>
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span id="insRegionTag" class="pf-hint">—</span>
+                    <button id="btnProfileToEarnings" class="quick-insight-btn" title="Switch to recent 4Q / 2H Earnings Reports">Earnings Reports →</button>
+                  </div>
+                </div>
+                <p id="insDescription" class="ins-desc">Loading company profile...</p>
+                <div id="insProfileMeta" class="ins-profile-meta"></div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Sub-Pane 2: Recent Earnings Reports (Last 4Q or Last 2H by Country) -->
+          <div id="insEarningsPane" class="ins-pane hidden">
+            <section class="pf-card">
+              <div class="er-cadence-bar">
+                <div class="er-cadence-info">
+                  <h2 id="erHeaderTitle">Recent Earnings Reports</h2>
+                  <div id="erCountryNote" class="pf-hint">Auto-detecting reporting cadence by country...</div>
+                </div>
+                <div class="segmented" id="erCadenceToggle" role="group" aria-label="Reporting cadence">
+                  <button class="seg-btn active" data-cadence="4Q" title="Last 4 Quarterly Earnings Reports">Last 4Q</button>
+                  <button class="seg-btn" data-cadence="2H" title="Last 2 Half-Year (Semi-Annual) Earnings Reports">Last 2H</button>
+                </div>
+              </div>
+              <div id="erKpiStrip" class="margins-strip" style="margin-top:12px"></div>
+            </section>
+
+            <!-- Period-by-Period Earnings Report Cards -->
+            <section id="erCardsGrid" class="er-cards-grid"></section>
+
+            <!-- Detailed Period Income & Cash Flow Comparison Table -->
+            <section class="pf-card">
+              <div class="pf-card-header">
+                <h2 id="erFinTableTitle">Period-by-Period Financial Breakdown</h2>
+                <span id="erFinTableSub" class="pf-hint">Revenue, profitability &amp; cash flow</span>
+              </div>
+              <div class="table-wrap">
+                <table class="holdings-table">
+                  <thead id="erFinHead"></thead>
+                  <tbody id="erFinBody"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- Official Earnings Releases & Regulatory Filings -->
+            <section class="pf-card">
+              <div class="pf-card-header">
+                <h2>Official Earnings Releases &amp; Financial Filings</h2>
+                <span id="erFilingsSub" class="pf-hint">10-Q · 10-K · 8-K · 6-K · 20-F · Click to open full report</span>
+              </div>
+              <div id="erFilingsList" class="er-filings-list"></div>
+            </section>
+          </div>
+        </div>
+      </main>
+
+      <!-- Main Stage 4: Live Real-Time Portfolio Tab -->
+      <main id="portfolioStage" class="stage portfolio-stage hidden">
+        <div class="portfolio-scroll">
+          <!-- KPI Cards Row -->
+          <section class="kpi-grid">
+            <div class="kpi-card primary">
+              <div class="kpi-label">Total Portfolio Value</div>
+              <div id="pfTotalValue" class="kpi-value">$0.00</div>
+              <div id="pfCostSub" class="kpi-sub">Cost Basis: $0.00 · 0 Holdings</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">24h Profit / Loss</div>
+              <div id="pf24hPnl" class="kpi-value neutral">$0.00</div>
+              <div id="pf24hPct" class="kpi-sub neutral">0.00% today</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Total Unrealized P/L</div>
+              <div id="pfTotalPnl" class="kpi-value neutral">$0.00</div>
+              <div id="pfTotalPct" class="kpi-sub neutral">0.00% all-time</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Top Mover (24h)</div>
+              <div id="pfTopMover" class="kpi-value">—</div>
+              <div id="pfTopMoverSub" class="kpi-sub">Add holdings to track live</div>
+            </div>
+          </section>
+
+          <!-- Middle Responsive Bento Analytics Row (Resizes with Window) -->
+          <section class="pf-main-grid">
+            <!-- Left: Portfolio Performance Over Time vs. Benchmarks -->
+            <section class="pf-card pf-perf-card">
+              <div class="pf-perf-header">
+                <div>
+                  <h2>Portfolio Performance vs. Benchmarks</h2>
+                  <div id="pfPerfSub" class="pf-hint">Current holdings performance compared to S&amp;P 500, Nasdaq-100, Mag 7 (7 Perps) &amp; MSCI World</div>
+                </div>
+                <div class="pf-perf-controls">
+                  <div class="segmented pf-ranges-bar" id="pfPerfRanges" role="group" aria-label="Performance timeframe">
+                    <button class="seg-btn" data-pfrange="15m">15m</button>
+                    <button class="seg-btn" data-pfrange="30m">30m</button>
+                    <button class="seg-btn" data-pfrange="1H">1H</button>
+                    <button class="seg-btn" data-pfrange="3H">3H</button>
+                    <button class="seg-btn" data-pfrange="6H">6H</button>
+                    <button class="seg-btn" data-pfrange="12H">12H</button>
+                    <button class="seg-btn" data-pfrange="1D">1D</button>
+                    <button class="seg-btn" data-pfrange="3D">3D</button>
+                    <button class="seg-btn" data-pfrange="1W">1W</button>
+                    <button class="seg-btn" data-pfrange="1M">1M</button>
+                    <button class="seg-btn" data-pfrange="3M">3M</button>
+                    <button class="seg-btn" data-pfrange="6M">6M</button>
+                    <button class="seg-btn" data-pfrange="YTD">YTD</button>
+                    <button class="seg-btn active" data-pfrange="1Y">1Y</button>
+                    <button class="seg-btn" data-pfrange="3Y">3Y</button>
+                  </div>
+                  <div class="segmented" id="pfPerfMode" role="group" aria-label="Display mode">
+                    <button class="seg-btn active" data-pfmode="pct">% Return</button>
+                    <button class="seg-btn" data-pfmode="usd">$ Value</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pf-bench-row">
+                <div class="pf-bench-toggles" id="pfBenchToggles">
+                  <span class="bench-chip port-chip"><span class="bench-dot" style="background:#50e3c2"></span>Portfolio <strong id="pfLegendPort">—</strong></span>
+                  <button class="bench-chip active" data-bench="spy"><span class="bench-dot" style="background:#38bdf8"></span>S&amp;P 500 <strong id="pfLegendSpy">—</strong></button>
+                  <button class="bench-chip active" data-bench="qqq"><span class="bench-dot" style="background:#a78bfa"></span>Nasdaq-100 <strong id="pfLegendQqq">—</strong></button>
+                  <button class="bench-chip active" data-bench="mag7"><span class="bench-dot" style="background:#f472b6"></span>Mag 7 <strong id="pfLegendMag7">—</strong></button>
+                  <button class="bench-chip active" data-bench="msci"><span class="bench-dot" style="background:#fbbf24"></span>MSCI World <strong id="pfLegendMsci">—</strong></button>
+                </div>
+                <div id="pfPerfHoverHud" class="pf-hover-hud">Hover chart to inspect comparison</div>
+              </div>
+
+              <div class="pf-perf-canvas-wrap">
+                <canvas id="pfPerfCanvas" width="900" height="220"></canvas>
+              </div>
+
+              <div id="pfBenchStats" class="margins-strip pf-bench-stats"></div>
+            </section>
+
+            <!-- Right: Allocation Breakdown & Unrealized P/L Stack -->
+            <div class="pf-side-stack" id="pfAnalyticsRow">
+              <div class="pf-card pf-side-card">
+                <div class="pf-card-header">
+                  <h2>Allocation Breakdown</h2>
+                  <span class="pf-hint">By live value</span>
+                </div>
+                <div class="donut-layout">
+                  <canvas id="pfDonutCanvas" width="128" height="128"></canvas>
+                  <div id="pfDonutLegend" class="donut-legend"></div>
+                </div>
+              </div>
+              <div class="pf-card pf-side-card">
+                <div class="pf-card-header">
+                  <h2>Unrealized P/L by Holding</h2>
+                  <span class="pf-hint">Live tick-by-tick</span>
+                </div>
+                <div id="pfPnlBars" class="pnl-bars"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Collapsible Add / Edit Holding Drawer -->
+          <section id="pfFormCard" class="pf-card pf-form-card hidden">
+            <div class="pf-card-header">
+              <h2 id="pfFormTitle">Add Portfolio Holding</h2>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span class="pf-hint">Tracks live Hyperliquid WebSocket prices in real time · Saved locally on this device</span>
+                <button type="button" id="btnCloseHoldingForm" class="ghost-btn pf-close-form-btn" title="Hide form">×</button>
+              </div>
+            </div>
+            <form id="holdingForm" class="holding-form">
+              <input type="hidden" id="holdingEditId" value="" />
+              <div class="form-field grow">
+                <label for="holdingSymbolInput">Stock / Asset</label>
+                <input id="holdingSymbolInput" type="text" list="hip3StockOptions" placeholder="e.g. xyz:NVDA, TSLA, AAPL..." autocomplete="off" required />
+                <datalist id="hip3StockOptions"></datalist>
+              </div>
+              <div class="form-field sm">
+                <label for="holdingSide">Side</label>
+                <select id="holdingSide">
+                  <option value="long">Long</option>
+                  <option value="short">Short</option>
+                </select>
+              </div>
+              <div class="form-field md">
+                <label for="holdingQty">Quantity (Shares)</label>
+                <input id="holdingQty" type="number" step="any" min="0.000001" placeholder="e.g. 25" required />
+              </div>
+              <div class="form-field md">
+                <label for="holdingAvgPrice">
+                  Avg Entry ($)
+                  <button type="button" id="btnUseLivePrice" class="inline-link-btn">Use Live</button>
+                </label>
+                <input id="holdingAvgPrice" type="number" step="any" min="0.000001" placeholder="e.g. 132.50" required />
+              </div>
+              <div class="form-field md">
+                <label for="holdingNote">Note (optional)</label>
+                <input id="holdingNote" type="text" placeholder="Core, Swing..." />
+              </div>
+              <div class="form-actions">
+                <button type="submit" id="btnSubmitHolding" class="primary-btn lg-btn">Add Holding</button>
+                <button type="button" id="btnCancelEdit" class="ghost-btn hidden">Cancel</button>
+              </div>
+            </form>
+          </section>
+
+          <!-- Bottom Live Holdings Table (Top 3 Visible, Scrollable for #4+) -->
+          <section class="pf-card pf-holdings-card">
+            <div class="pf-card-header pf-holdings-header">
+              <div style="display:flex;align-items:baseline;gap:10px">
+                <h2>Live Holdings</h2>
+                <span id="pfHoldingsHint" class="pf-hint">Click any row to open its live chart</span>
+              </div>
+              <button type="button" id="btnToggleAddHolding" class="primary-btn pf-add-toggle-btn">+ Add Holding</button>
+            </div>
+            <div class="table-wrap pf-holdings-scroll">
+              <table class="holdings-table">
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <th>Side</th>
+                    <th class="num">Qty</th>
+                    <th class="num">Avg Entry</th>
+                    <th class="num">Live Price</th>
+                    <th class="num">Market Value</th>
+                    <th class="num">Weight</th>
+                    <th class="num">24h P/L</th>
+                    <th class="num">Total P/L</th>
+                    <th class="num">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="holdingsTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <!-- Main Stage 5: Trading Tools & Live Calculators -->
+      <main id="toolsStage" class="stage tools-stage hidden">
+        <div class="tools-scroll">
+          <header class="tools-header">
+            <div>
+              <h1>Trading Calculator Suite</h1>
+              <p class="tools-sub">Live-priced order sizing, stock-for-stock swaps, cost-basis averaging, risk sizing &amp; what-if targets · Click any stock in the sidebar to load it live</p>
+            </div>
+          </header>
+
+          <!-- Calculator Mode Tabs -->
+          <div id="calcModeTabs" class="calc-mode-tabs" role="tablist">
+            <button type="button" class="calc-tab-btn active" data-calctab="cash">
+              <span class="calc-tab-title">Cash &amp; Shares</span>
+              <span class="calc-tab-desc">Buy cost &amp; max shares</span>
+            </button>
+            <button type="button" class="calc-tab-btn" data-calctab="swap">
+              <span class="calc-tab-title">Stock Swap</span>
+              <span class="calc-tab-desc">Sell A to buy B</span>
+            </button>
+            <button type="button" class="calc-tab-btn" data-calctab="dca">
+              <span class="calc-tab-title">Avg Down / DCA</span>
+              <span class="calc-tab-desc">Blended cost &amp; target avg</span>
+            </button>
+            <button type="button" class="calc-tab-btn" data-calctab="risk">
+              <span class="calc-tab-title">Position &amp; Risk</span>
+              <span class="calc-tab-desc">Stop-loss sizing &amp; R:R</span>
+            </button>
+            <button type="button" class="calc-tab-btn" data-calctab="target">
+              <span class="calc-tab-title">Profit &amp; Target</span>
+              <span class="calc-tab-desc">What-if P/L &amp; goal price</span>
+            </button>
+          </div>
+
+          <!-- Panel 1: Cash & Shares Calculator -->
+          <section id="calcPanelCash" class="calc-panel">
+            <div class="calc-two-col">
+              <div class="pf-card calc-form-card">
+                <div class="pf-card-header">
+                  <h2>Order Cost &amp; Share Capacity</h2>
+                  <div id="calcCashModeSeg" class="segmented">
+                    <button type="button" class="seg-btn active" data-mode="shares_to_cash">Shares → Cash</button>
+                    <button type="button" class="seg-btn" data-mode="cash_to_shares">Cash → Shares</button>
+                  </div>
+                </div>
+
+                <div class="calc-fields">
+                  <div class="form-field">
+                    <label for="calcCashSym">Stock / Asset</label>
+                    <input id="calcCashSym" type="text" list="hip3StockOptions" placeholder="e.g. xyz:NVDA, TSLA..." autocomplete="off" />
+                  </div>
+
+                  <div class="form-field">
+                    <label for="calcCashPrice">
+                      Price ($)
+                      <button type="button" id="calcCashLiveBadge" class="calc-live-badge live">● Live</button>
+                    </label>
+                    <input id="calcCashPrice" type="number" step="any" min="0.000001" placeholder="Live price" />
+                  </div>
+
+                  <div class="form-field">
+                    <label id="calcCashAmountLabel" for="calcCashAmount">Quantity (Shares)</label>
+                    <input id="calcCashAmount" type="number" step="any" min="0" value="50" />
+                  </div>
+
+                  <div class="form-field">
+                    <label for="calcCashLev">Leverage (1× = Spot / Cash)</label>
+                    <div class="calc-inline-row">
+                      <input id="calcCashLev" type="number" step="any" min="1" value="1" class="calc-num-sm" />
+                      <div id="calcCashLevPills" class="calc-chip-row">
+                        <button type="button" class="calc-chip" data-lev="1">1× Spot</button>
+                        <button type="button" class="calc-chip" data-lev="2">2×</button>
+                        <button type="button" class="calc-chip" data-lev="3">3×</button>
+                        <button type="button" class="calc-chip" data-lev="5">5×</button>
+                        <button type="button" class="calc-chip" data-lev="10">10×</button>
+                        <button type="button" class="calc-chip" data-lev="max">Max</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="calcCashFeeBps">Est. Trading Fee (bps · 100 bps = 1%)</label>
+                    <div class="calc-inline-row">
+                      <input id="calcCashFeeBps" type="number" step="any" min="0" value="0" class="calc-num-sm" />
+                      <div id="calcCashFeePills" class="calc-chip-row">
+                        <button type="button" class="calc-chip" data-bps="0">0 bps</button>
+                        <button type="button" class="calc-chip" data-bps="3.5">3.5 bps (HL)</button>
+                        <button type="button" class="calc-chip" data-bps="10">10 bps</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="calc-actions-row">
+                    <button type="button" id="btnCalcCashAddPf" class="primary-btn lg-btn">+ Add to Portfolio</button>
+                    <button type="button" id="btnCalcCashOpenChart" class="ghost-btn">Open Chart</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pf-card calc-result-card">
+                <div class="pf-card-header">
+                  <h2>Live Calculation</h2>
+                  <span class="pf-hint">Updates tick-by-tick</span>
+                </div>
+                <div id="calcCashOut" class="calc-out"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Panel 2: Stock Swap / Rotation Calculator -->
+          <section id="calcPanelSwap" class="calc-panel hidden">
+            <div id="calcSwapHoldingsPills" class="calc-holdings-bar hidden"></div>
+
+            <div class="calc-two-col">
+              <div class="pf-card calc-form-card">
+                <div class="pf-card-header">
+                  <h2>Stock-for-Stock Swap / Rotation</h2>
+                  <div id="calcSwapDirSeg" class="segmented">
+                    <button type="button" class="seg-btn active" data-dir="buy_to_sell">Buy Target → Sell</button>
+                    <button type="button" class="seg-btn" data-dir="sell_to_buy">Sell Amount → Buy</button>
+                  </div>
+                </div>
+
+                <div class="calc-fields">
+                  <div class="calc-swap-pair">
+                    <div class="calc-swap-box buy">
+                      <div class="calc-swap-tag up">BUY (TARGET STOCK)</div>
+                      <div class="form-field">
+                        <label for="calcSwapBuySym">Stock to Buy</label>
+                        <input id="calcSwapBuySym" type="text" list="hip3StockOptions" placeholder="e.g. xyz:NVDA" autocomplete="off" />
+                      </div>
+                      <div class="form-field">
+                        <label for="calcSwapBuyPrice">
+                          Buy Price ($)
+                          <button type="button" id="calcSwapBuyLiveBadge" class="calc-live-badge live">● Live</button>
+                        </label>
+                        <input id="calcSwapBuyPrice" type="number" step="any" min="0.000001" />
+                      </div>
+                    </div>
+
+                    <button type="button" id="btnCalcSwapFlip" class="calc-flip-btn" title="Flip Buy &amp; Sell stocks">⇄</button>
+
+                    <div class="calc-swap-box sell">
+                      <div class="calc-swap-tag down">SELL (FUNDING STOCK)</div>
+                      <div class="form-field">
+                        <label for="calcSwapSellSym">Stock to Sell</label>
+                        <input id="calcSwapSellSym" type="text" list="hip3StockOptions" placeholder="e.g. xyz:TSLA" autocomplete="off" />
+                      </div>
+                      <div class="form-field">
+                        <label for="calcSwapSellPrice">
+                          Sell Price ($)
+                          <button type="button" id="calcSwapSellLiveBadge" class="calc-live-badge live">● Live</button>
+                        </label>
+                        <input id="calcSwapSellPrice" type="number" step="any" min="0.000001" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <div class="calc-label-row">
+                      <label id="calcSwapAmountLabel" for="calcSwapAmount">Shares to Buy</label>
+                      <div id="calcSwapUnitSeg" class="segmented">
+                        <button type="button" class="seg-btn active" data-unit="shares">Shares</button>
+                        <button type="button" class="seg-btn" data-unit="usd">$ Amount</button>
+                        <button type="button" class="seg-btn hidden" data-unit="pct">% Holding</button>
+                      </div>
+                    </div>
+                    <input id="calcSwapAmount" type="number" step="any" min="0" value="25" />
+                    <div id="calcSwapPctPills" class="calc-chip-row hidden" style="margin-top:6px">
+                      <button type="button" class="calc-chip" data-pct="25">25% of Holding</button>
+                      <button type="button" class="calc-chip" data-pct="50">50%</button>
+                      <button type="button" class="calc-chip" data-pct="75">75%</button>
+                      <button type="button" class="calc-chip" data-pct="100">100% (Full Exit)</button>
+                    </div>
+                  </div>
+
+                  <div class="calc-two-inputs">
+                    <div class="form-field">
+                      <label for="calcSwapExtraCash">Extra Cash Added ($ optional)</label>
+                      <input id="calcSwapExtraCash" type="number" step="any" min="0" value="0" />
+                    </div>
+                    <div class="form-field">
+                      <label for="calcSwapFeeBps">Fee per Leg (bps)</label>
+                      <input id="calcSwapFeeBps" type="number" step="any" min="0" value="0" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pf-card calc-result-card">
+                <div class="pf-card-header">
+                  <h2>Swap Requirement</h2>
+                  <span class="pf-hint">Exact &amp; whole-share conversion</span>
+                </div>
+                <div id="calcSwapOut" class="calc-out"></div>
+              </div>
+            </div>
+
+            <section class="pf-card" style="margin-top:12px">
+              <div class="pf-card-header">
+                <h2 id="calcSwapLadderTitle">Quick Conversion Table</h2>
+                <span class="pf-hint">Live share-for-share equivalents</span>
+              </div>
+              <div class="table-wrap">
+                <table class="holdings-table calc-table">
+                  <thead>
+                    <tr>
+                      <th>Input Shares</th>
+                      <th class="num">Trade Value</th>
+                      <th class="num">Exact Swap Shares</th>
+                      <th class="num">Whole Shares</th>
+                      <th class="num">Leftover Cash</th>
+                    </tr>
+                  </thead>
+                  <tbody id="calcSwapLadderBody"></tbody>
+                </table>
+              </div>
+            </section>
+          </section>
+
+          <!-- Panel 3: Average Down / DCA Calculator -->
+          <section id="calcPanelDca" class="calc-panel hidden">
+            <div id="calcDcaHoldingsPills" class="calc-holdings-bar hidden"></div>
+
+            <div class="calc-two-col">
+              <div class="pf-card calc-form-card">
+                <div class="pf-card-header">
+                  <h2>Average Down / Cost Basis</h2>
+                  <div id="calcDcaAddModeSeg" class="segmented">
+                    <button type="button" class="seg-btn active" data-mode="shares">Add Shares</button>
+                    <button type="button" class="seg-btn" data-mode="usd">Add Cash ($)</button>
+                  </div>
+                </div>
+
+                <div class="calc-fields">
+                  <div class="form-field">
+                    <label for="calcDcaSym">Stock / Asset</label>
+                    <input id="calcDcaSym" type="text" list="hip3StockOptions" placeholder="e.g. xyz:NVDA" autocomplete="off" />
+                  </div>
+
+                  <div class="calc-two-inputs">
+                    <div class="form-field">
+                      <label for="calcDcaCurQty">Current Shares Held</label>
+                      <input id="calcDcaCurQty" type="number" step="any" min="0" value="50" />
+                    </div>
+                    <div class="form-field">
+                      <label for="calcDcaCurAvg">Current Avg Cost ($)</label>
+                      <input id="calcDcaCurAvg" type="number" step="any" min="0.000001" value="150" />
+                    </div>
+                  </div>
+
+                  <div class="calc-two-inputs">
+                    <div class="form-field">
+                      <label id="calcDcaAddLabel" for="calcDcaAddAmount">New Shares to Buy</label>
+                      <input id="calcDcaAddAmount" type="number" step="any" min="0" value="25" />
+                    </div>
+                    <div class="form-field">
+                      <label for="calcDcaBuyPrice">
+                        New Buy Price ($)
+                        <button type="button" id="calcDcaLiveBadge" class="calc-live-badge live">● Live</button>
+                      </label>
+                      <input id="calcDcaBuyPrice" type="number" step="any" min="0.000001" />
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="calcDcaTargetAvg">Reverse Solver: Desired Target Avg Price ($ optional)</label>
+                    <input id="calcDcaTargetAvg" type="number" step="any" min="0" placeholder="e.g. enter target avg to calculate exact shares needed" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="pf-card calc-result-card">
+                <div class="pf-card-header">
+                  <h2>New Blended Cost Basis</h2>
+                  <span class="pf-hint">Breakeven &amp; target avg analysis</span>
+                </div>
+                <div id="calcDcaOut" class="calc-out"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Panel 4: Position Sizing & Risk/Reward Calculator -->
+          <section id="calcPanelRisk" class="calc-panel hidden">
+            <div class="calc-two-col">
+              <div class="pf-card calc-form-card">
+                <div class="pf-card-header">
+                  <h2>Risk-Based Position Sizer</h2>
+                  <div id="calcRiskSideSeg" class="segmented">
+                    <button type="button" class="seg-btn active" data-side="long">Long</button>
+                    <button type="button" class="seg-btn" data-side="short">Short</button>
+                  </div>
+                </div>
+
+                <div class="calc-fields">
+                  <div class="calc-two-inputs">
+                    <div class="form-field">
+                      <label for="calcRiskSym">Stock / Asset</label>
+                      <input id="calcRiskSym" type="text" list="hip3StockOptions" placeholder="e.g. xyz:NVDA" autocomplete="off" />
+                    </div>
+                    <div class="form-field">
+                      <label for="calcRiskAcct">
+                        Account Size ($)
+                        <button type="button" id="btnCalcRiskUsePf" class="inline-link-btn">Use Portfolio</button>
+                      </label>
+                      <input id="calcRiskAcct" type="number" step="any" min="0" value="25000" />
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <div class="calc-label-row">
+                      <label for="calcRiskVal">Max Risk per Trade</label>
+                      <div id="calcRiskModeSeg" class="segmented">
+                        <button type="button" class="seg-btn active" data-rmode="pct">% Account</button>
+                        <button type="button" class="seg-btn" data-rmode="usd">Fixed $</button>
+                      </div>
+                    </div>
+                    <div class="calc-inline-row">
+                      <input id="calcRiskVal" type="number" step="any" min="0" value="1" class="calc-num-sm" />
+                      <div id="calcRiskPctPills" class="calc-chip-row">
+                        <button type="button" class="calc-chip" data-rpct="0.5">0.5%</button>
+                        <button type="button" class="calc-chip" data-rpct="1">1%</button>
+                        <button type="button" class="calc-chip" data-rpct="2">2%</button>
+                        <button type="button" class="calc-chip" data-rpct="3">3%</button>
+                        <button type="button" class="calc-chip" data-rpct="5">5%</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="calc-two-inputs">
+                    <div class="form-field">
+                      <label for="calcRiskEntry">
+                        Entry Price ($)
+                        <button type="button" id="calcRiskLiveBadge" class="calc-live-badge live">● Live</button>
+                      </label>
+                      <input id="calcRiskEntry" type="number" step="any" min="0.000001" />
+                    </div>
+                    <div class="form-field">
+                      <label for="calcRiskLev">Leverage (1× = Spot)</label>
+                      <input id="calcRiskLev" type="number" step="any" min="1" value="1" />
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="calcRiskStop">Stop-Loss Price ($)</label>
+                    <div class="calc-inline-row">
+                      <input id="calcRiskStop" type="number" step="any" min="0.000001" class="calc-num-md" />
+                      <div id="calcRiskStopPills" class="calc-chip-row">
+                        <button type="button" class="calc-chip" data-spct="2">2% Stop</button>
+                        <button type="button" class="calc-chip" data-spct="5">5%</button>
+                        <button type="button" class="calc-chip" data-spct="8">8%</button>
+                        <button type="button" class="calc-chip" data-spct="10">10%</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="calcRiskTarget">Take-Profit Target ($ optional)</label>
+                    <div class="calc-inline-row">
+                      <input id="calcRiskTarget" type="number" step="any" min="0" class="calc-num-md" />
+                      <div id="calcRiskRPills" class="calc-chip-row">
+                        <button type="button" class="calc-chip" data-rmult="1.5">1.5R</button>
+                        <button type="button" class="calc-chip" data-rmult="2">2R</button>
+                        <button type="button" class="calc-chip" data-rmult="3">3R</button>
+                        <button type="button" class="calc-chip" data-rmult="5">5R</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pf-card calc-result-card">
+                <div class="pf-card-header">
+                  <h2>Optimal Position Size</h2>
+                  <span class="pf-hint">Exact shares for fixed stop risk</span>
+                </div>
+                <div id="calcRiskOut" class="calc-out"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Panel 5: Profit Target & What-If Simulator -->
+          <section id="calcPanelTarget" class="calc-panel hidden">
+            <div id="calcTargetHoldingsPills" class="calc-holdings-bar hidden"></div>
+
+            <div class="calc-two-col">
+              <div class="pf-card calc-form-card">
+                <div class="pf-card-header">
+                  <h2>Profit Target &amp; What-If Simulator</h2>
+                  <div id="calcTargetSideSeg" class="segmented">
+                    <button type="button" class="seg-btn active" data-side="long">Long</button>
+                    <button type="button" class="seg-btn" data-side="short">Short</button>
+                  </div>
+                </div>
+
+                <div class="calc-fields">
+                  <div class="form-field">
+                    <label for="calcTargetSym">Stock / Asset</label>
+                    <input id="calcTargetSym" type="text" list="hip3StockOptions" placeholder="e.g. xyz:NVDA" autocomplete="off" />
+                  </div>
+
+                  <div class="form-field">
+                    <div class="calc-label-row">
+                      <label id="calcTargetAmtLabel" for="calcTargetAmt">Quantity (Shares)</label>
+                      <div id="calcTargetUnitSeg" class="segmented">
+                        <button type="button" class="seg-btn active" data-unit="shares">Shares</button>
+                        <button type="button" class="seg-btn" data-unit="usd">$ Invested</button>
+                      </div>
+                    </div>
+                    <input id="calcTargetAmt" type="number" step="any" min="0" value="50" />
+                  </div>
+
+                  <div class="calc-two-inputs">
+                    <div class="form-field">
+                      <label for="calcTargetEntry">
+                        Entry Price ($)
+                        <button type="button" id="calcTargetLiveBadge" class="calc-live-badge live">● Live</button>
+                      </label>
+                      <input id="calcTargetEntry" type="number" step="any" min="0.000001" />
+                    </div>
+                    <div class="form-field">
+                      <label for="calcTargetExit">Target Exit Price ($)</label>
+                      <input id="calcTargetExit" type="number" step="any" min="0.000001" />
+                    </div>
+                  </div>
+
+                  <div id="calcTargetMovePills" class="calc-chip-row">
+                    <button type="button" class="calc-chip" data-move="-20">-20%</button>
+                    <button type="button" class="calc-chip" data-move="-10">-10%</button>
+                    <button type="button" class="calc-chip" data-move="10">+10%</button>
+                    <button type="button" class="calc-chip" data-move="25">+25%</button>
+                    <button type="button" class="calc-chip" data-move="50">+50%</button>
+                    <button type="button" class="calc-chip" data-move="100">+100% (2×)</button>
+                  </div>
+
+                  <div class="calc-two-inputs">
+                    <div class="form-field">
+                      <label for="calcTargetLev">Leverage (1× = Spot)</label>
+                      <input id="calcTargetLev" type="number" step="any" min="1" value="1" />
+                    </div>
+                    <div class="form-field">
+                      <label for="calcTargetFeeBps">Fee per Leg (bps)</label>
+                      <input id="calcTargetFeeBps" type="number" step="any" min="0" value="0" />
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="calcTargetGoalProfit">Reverse Solver: Desired Net Profit ($ optional)</label>
+                    <input id="calcTargetGoalProfit" type="number" step="any" min="0" placeholder="e.g. 2500 → finds exact target price" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="pf-card calc-result-card">
+                <div class="pf-card-header">
+                  <h2>Projected Outcome</h2>
+                  <span class="pf-hint">Net P/L, ROE &amp; price goal</span>
+                </div>
+                <div id="calcTargetOut" class="calc-out"></div>
+              </div>
+            </div>
+
+            <section class="pf-card" style="margin-top:12px">
+              <div class="pf-card-header">
+                <h2>Price Move Scenario Matrix</h2>
+                <span class="pf-hint">Instant what-if P/L from −25% to +100%</span>
+              </div>
+              <div class="table-wrap">
+                <table class="holdings-table calc-table">
+                  <thead>
+                    <tr>
+                      <th>Price Move</th>
+                      <th class="num">Target Price</th>
+                      <th class="num">Projected Equity</th>
+                      <th class="num">Net P/L ($)</th>
+                      <th class="num">ROE (%)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="calcTargetMatrixBody"></tbody>
+                </table>
+              </div>
+            </section>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- Adaptive Mobile Bottom Tab Bar (iPhone, iPhone Duo Folded, iPad Slide Over) -->
+    <nav id="mobileTabbar" class="mobile-tabbar" aria-label="Primary navigation">
+      <button type="button" class="mobile-tab-btn" data-mtab="markets">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+        <span>Markets</span>
+      </button>
+      <button type="button" class="mobile-tab-btn active" data-mtab="single">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+        </svg>
+        <span>Chart</span>
+      </button>
+      <button type="button" class="mobile-tab-btn" data-mtab="insights">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <span>Insights</span>
+      </button>
+      <button type="button" class="mobile-tab-btn" data-mtab="portfolio">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>
+        </svg>
+        <span>Portfolio</span>
+      </button>
+      <button type="button" class="mobile-tab-btn" data-mtab="tools">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/>
+          <line x1="8" y1="11" x2="8.01" y2="11"/><line x1="12" y1="11" x2="12.01" y2="11"/><line x1="16" y1="11" x2="16.01" y2="11"/>
+          <line x1="8" y1="15" x2="8.01" y2="15"/><line x1="12" y1="15" x2="12.01" y2="15"/><line x1="16" y1="15" x2="16.01" y2="15"/>
+        </svg>
+        <span>Tools</span>
+      </button>
+    </nav>
+
+    <!-- iOS / iPadOS / iPhone Duo Adaptive Layout Mode Picker -->
+    <div id="iosModeSheet" class="ios-mode-sheet hidden" role="dialog" aria-label="Device layout mode">
+      <div class="ios-mode-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <h3>Adaptive Device Layout</h3>
+          <button type="button" id="btnCloseIosModeSheet" class="ghost-btn" style="padding:4px 9px">Done</button>
+        </div>
+        <div id="iosModeDetected" class="ios-mode-detected">Auto-detecting hardware display...</div>
+        <div id="iosModeOptions" class="ios-mode-options">
+          <button type="button" class="ios-mode-opt active" data-devmode="auto" style="grid-column:1 / -1">
+            <strong>Auto-Detect (Recommended)</strong>
+            <span>Adapts live across iPhone, iPhone Duo fold/unfold &amp; iPad</span>
+          </button>
+          <button type="button" class="ios-mode-opt" data-devmode="iphone">
+            <strong>iPhone Mobile</strong>
+            <span>Single-column + bottom tabs</span>
+          </button>
+          <button type="button" class="ios-mode-opt" data-devmode="duo-folded">
+            <strong>iPhone Duo · Folded</strong>
+            <span>5.4" wide cover display</span>
+          </button>
+          <button type="button" class="ios-mode-opt" data-devmode="duo-unfolded">
+            <strong>iPhone Duo · Unfolded</strong>
+            <span>7.6" hinge-aware dual pane</span>
+          </button>
+          <button type="button" class="ios-mode-opt" data-devmode="ipad">
+            <strong>iPad Pro Terminal</strong>
+            <span>Multi-pane sidebar + 2×2 grid</span>
+          </button>
+        </div>
+        <div class="ios-about-footer">
+          HyperStocks v3.8.1 · Not-for-profit educational &amp; teaching resource only, not financial advice.<br />
+          <button type="button" id="btnIosLegalLink" style="background:none;border:none;color:#50e3c2;text-decoration:underline;font-size:11px;cursor:pointer;padding:2px 0;margin:2px 0">View Legal Disclosure &amp; Terms</button><br />
+          © 2026 Matthew Quinn. All rights reserved.
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+  </div>
+
+  <script src="config.js?v=1795753719"></script>
+  <script defer src="web-downloads.js?v=1795753719"></script>
+  <script defer src="chart.js?v=1795753719"></script>
+  <script defer src="hyperliquid.js?v=1795753719"></script>
+  <script defer src="tools.js?v=1795753719"></script>
+  <script defer src="app.js?v=1795753719"></script>
+</body>
+</html>
